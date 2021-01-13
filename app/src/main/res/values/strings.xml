@@ -1,0 +1,21 @@
+<resources>
+
+    <string name="app_name">Gestion Articulos</string>
+    <string name="title_app">GSA S.A.</string>
+
+    <!-- Strings for Form -->
+    <string name="Code">Codigo:</string>
+    <string name="Des">Descripcion:</string>
+    <string name="Money">Precio:</string>
+    <string name="Stock">Stock:</string>
+    <string name="Add">Añadir</string>
+    <string name="Update">Canviar</string>
+    <string name="Delete">Eliminar</string>
+    <string name="Cancel">Cancelar</string>
+    <string name="Num">Cantidad:</string>
+    <string name="Date">Fecha:</string>
+    <string name="type">Tipo:</string>
+    <string name="DateI">Fecha inicio:</string>
+    <string name="DateF">Fecha final:</string>
+
+</resources>
