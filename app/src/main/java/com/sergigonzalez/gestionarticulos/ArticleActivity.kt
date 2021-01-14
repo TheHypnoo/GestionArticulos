@@ -18,7 +18,7 @@ class ArticleActivity : AppCompatActivity() {
 
     private lateinit var database: ArticleApp
     private lateinit var Article: Article
-    private lateinit var productoLiveData: LiveData<Article>
+    private lateinit var articleLiveData: LiveData<Article>
     private lateinit var name_Article: TextView
     private lateinit var price_Article: TextView
     private lateinit var description_Article: TextView
@@ -34,9 +34,9 @@ class ArticleActivity : AppCompatActivity() {
 
         val idArticle = intent.getStringExtra("id")
 
-        productoLiveData = database.Articles().get(idArticle)
+        articleLiveData = database.Articles().get(idArticle)
 
-        productoLiveData.observe(this, Observer {
+        articleLiveData.observe(this, Observer {
             Article = it
 
 
@@ -61,7 +61,7 @@ class ArticleActivity : AppCompatActivity() {
             }
 
             R.id.delete_item -> {
-                productoLiveData.removeObservers(this)
+                articleLiveData.removeObservers(this)
 
                 CoroutineScope(Dispatchers.IO).launch {
                     database.Articles().delete(Article)
@@ -71,9 +71,5 @@ class ArticleActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    public fun deleteArticle(Article: Article) {
-        database.Articles().delete(Article)
     }
 }

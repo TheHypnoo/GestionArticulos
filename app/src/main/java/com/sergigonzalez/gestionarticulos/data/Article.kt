@@ -11,5 +11,5 @@ class Article(
     val descriptionArticle: String,
     val familyArticle: String,
     val priceArticle: Double,
-    val stockArticle: Int
+    var stockArticle: Int
 ) : Serializable

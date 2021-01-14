@@ -2,12 +2,18 @@ package com.sergigonzalez.gestionarticulos
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
 import androidx.lifecycle.Observer
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.sergigonzalez.gestionarticulos.data.Article
 import com.sergigonzalez.gestionarticulos.data.ArticleApp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var lista: ListView
@@ -45,5 +51,36 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_main, menu)
+
+        return super.onCreateOptionsMenu(menu)
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.NoHaveStock -> {
+
+            }
+
+            R.id.HaveStock -> {
+
+            }
+
+            R.id.Ascendent -> {
+
+            }
+
+            R.id.Descendent -> {
+
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 }

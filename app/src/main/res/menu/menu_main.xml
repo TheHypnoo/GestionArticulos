@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/NoHaveStock"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="Articulos sin stock"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/HaveStock"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="Articulos con stock"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/Ascendent"
+        android:title="A - Z"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/Descendent"
+        android:title="Z - A"
+        app:showAsAction="never">
+    </item>
+    <!---
+    <item
+        android:id="@+id/Movements"
+        android:icon="@drawable/ic_move_to_inbox_black_24dp"
+        android:title="Movements"
+        app:showAsAction="ifRoom">
+    </item>
+    -->
+
+</menu>
