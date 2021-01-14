@@ -18,4 +18,10 @@
     <string name="DateI">Fecha inicio:</string>
     <string name="DateF">Fecha final:</string>
 
+    <string-array name="family">
+        <item> </item>
+        <item>Hardware</item>
+        <item>Software</item>
+        <item>Altres</item>
+    </string-array>
 </resources>

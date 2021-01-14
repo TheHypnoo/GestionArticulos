@@ -52,6 +52,20 @@
             android:inputType="textPersonName" />
 
         <TextView
+            android:id="@+id/textView5"
+            style="@style/FormTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/economica_bold"
+            android:text="Categoria"
+            android:textSize="22dp" />
+
+        <Spinner
+            android:id="@+id/family_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
+
+        <TextView
             android:id="@+id/textView3"
             style="@style/FormTv"
             android:layout_width="match_parent"
@@ -83,6 +97,11 @@
             android:ems="10"
             android:inputType="textPersonName"
             android:textSize="18dp" />
+
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="25dp" />
 
         <Button
             android:id="@+id/save_btn"
