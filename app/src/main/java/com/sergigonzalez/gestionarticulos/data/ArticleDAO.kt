@@ -12,11 +12,12 @@ interface ArticleDAO {
     fun get(id: String?): LiveData<Article>
 
     @Insert
-    fun insertAll(vararg productos: Article)
+    fun insertAll(vararg Articles: Article)
 
     @Update
-    fun update(producto: Article)
+    fun update(Article: Article)
 
     @Delete
-    fun delete(producto: Article)
+    fun delete(Article: Article)
+
 }

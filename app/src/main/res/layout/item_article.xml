@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:id="@+id/Article">
 
     <LinearLayout
         android:layout_width="100dp"
@@ -23,16 +24,6 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textview2"
-            style="@style/TvShowElement"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/economica_bold"
-            android:text="@string/Stock"
-            android:textSize="20dp" />
-
-        <TextView
             android:id="@+id/textview3"
             style="@style/TvShowElement"
             android:layout_width="match_parent"
@@ -40,6 +31,16 @@
             android:layout_weight="1"
             android:fontFamily="@font/economica_bold"
             android:text="Descripcion:"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/textview2"
+            style="@style/TvShowElement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/economica_bold"
+            android:text="@string/Stock"
             android:textSize="20dp" />
 
         <TextView
@@ -78,7 +79,7 @@
             android:textSize="19dp" />
 
         <TextView
-            android:id="@+id/StockArticle"
+            android:id="@+id/descriptionArticle"
             style="@style/TvShow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -87,7 +88,7 @@
             android:textSize="19dp" />
 
         <TextView
-            android:id="@+id/tvDesc"
+            android:id="@+id/stockArticle"
             style="@style/TvShow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -96,7 +97,7 @@
             android:textSize="19dp" />
 
         <TextView
-            android:id="@+id/tvDesc2"
+            android:id="@+id/priceArticle"
             style="@style/TvShow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

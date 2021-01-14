@@ -6,7 +6,7 @@ import java.io.Serializable
 
 @Entity(tableName = "Articles")
 class Article(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = false)
     var idArticle: String,
     val descriptionArticle: String,
     val familyArticle: String,

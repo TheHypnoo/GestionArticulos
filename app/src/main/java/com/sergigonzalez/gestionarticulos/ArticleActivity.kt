@@ -72,4 +72,8 @@ class ArticleActivity : AppCompatActivity() {
 
         return super.onOptionsItemSelected(item)
     }
+
+    public fun deleteArticle(Article: Article) {
+        database.Articles().delete(Article)
+    }
 }
