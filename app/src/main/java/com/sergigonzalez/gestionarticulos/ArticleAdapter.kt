@@ -45,8 +45,6 @@ class ArticleAdapter(private val mContext: Context, private val listArticle: Lis
             linearLayoutArticle!!.setBackgroundColor(Color.parseColor(NoHaveStock))
         }
 
-
-
         delete.setOnClickListener {
             val builder = AlertDialog.Builder(mContext)
             builder.setMessage("Estas seguro que deseas eliminar el registro?")

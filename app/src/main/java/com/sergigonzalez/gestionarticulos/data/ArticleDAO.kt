@@ -8,8 +8,23 @@ interface ArticleDAO {
     @Query("SELECT * FROM Articles")
     fun getAll(): LiveData<List<Article>>
 
+    @Query("SELECT * FROM Articles ORDER BY idArticle ASC")
+    fun getAllAsc(): LiveData<List<Article>>
+
+    @Query("SELECT * FROM Articles ORDER BY idArticle DESC")
+    fun getAllDesc(): LiveData<List<Article>>
+
     @Query("SELECT * FROM Articles WHERE idArticle = :id")
     fun get(id: String?): LiveData<Article>
+
+    @Query("SELECT * FROM Articles WHERE descriptionArticle != ' ' ")
+    fun getDescription(): LiveData<List<Article>>
+
+    @Query("SELECT * FROM Articles WHERE stockArticle != 0")
+    fun getWithStock(): LiveData<List<Article>>
+
+    @Query("SELECT * FROM Articles WHERE stockArticle <= 0")
+    fun getWithoutStock(): LiveData<List<Article>>
 
     @Insert
     fun insertAll(vararg Articles: Article)

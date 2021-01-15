@@ -23,6 +23,7 @@ class newArticle : AppCompatActivity() {
     private lateinit var stock_et: EditText
     private lateinit var save_btn: Button
     private var family: String = " "
+    private var Edit: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,18 +39,6 @@ class newArticle : AppCompatActivity() {
         save_btn = findViewById(R.id.save_btn)
 
         val database = ArticleApp.getDatabase(this)
-
-        if (intent.hasExtra("Article")) {
-            val article = intent.extras?.getSerializable("Article") as Article
-
-            nombre_et.setText(article.idArticle)
-            descripcion_et.setText(article.descriptionArticle)
-            precio_et.setText(article.priceArticle.toString())
-            stock_et.setText(article.stockArticle.toString())
-            idArticle = article.idArticle
-        }
-
-
 
         ArrayAdapter.createFromResource(this, R.array.family, android.R.layout.simple_spinner_item).also {
             adapter ->
@@ -73,6 +62,35 @@ class newArticle : AppCompatActivity() {
                 }
             }
         }
+
+        if(intent.hasExtra("Edit")) {
+            Edit = intent.getBooleanExtra("Edit", false)
+            if(Edit) {
+                nombre_et.isEnabled = false
+            }
+        }
+        if (intent.hasExtra("Article")) {
+            val article = intent.extras?.getSerializable("Article") as Article
+
+            nombre_et.setText(article.idArticle)
+            descripcion_et.setText(article.descriptionArticle)
+            precio_et.setText(article.priceArticle.toString())
+            stock_et.setText(article.stockArticle.toString())
+            family = article.familyArticle
+            if(article.familyArticle.equals(" ")) {
+                familySpinner.setSelection(0)
+            } else if(article.familyArticle.equals("Hardware")) {
+                familySpinner.setSelection(1)
+            } else if(article.familyArticle.equals("Software")) {
+                familySpinner.setSelection(2)
+            } else if(article.familyArticle.equals("Altres")) {
+                familySpinner.setSelection(3)
+            }
+            idArticle = article.idArticle
+        }
+
+
+
 
         save_btn.setOnClickListener {
             val id : String
@@ -102,7 +120,8 @@ class newArticle : AppCompatActivity() {
                 snackbarMessage("Debes introducir una descripción")
                 return@setOnClickListener
             }
-
+/*
+            La categoria es opcional
             if(family.equals(" ")) {
                 if (view != null) {
                     val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -111,7 +130,7 @@ class newArticle : AppCompatActivity() {
                 snackbarMessage("Debes introducir una categoria")
                 return@setOnClickListener
             }
-
+*/
             if(TryCatchDouble(precio_et.text.toString().replace(",".toRegex(), "."))) {
                 precio = java.lang.Double.valueOf(precio_et.text.toString().replace(",".toRegex(), "."))
             } else {
