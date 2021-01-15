@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var lista: ListView
     private lateinit var addArticle: FloatingActionButton
     private lateinit var database: ArticleApp
-    private var listaArticles: List<Article> = emptyList()
+    private var listArticles: List<Article> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,9 +25,9 @@ class MainActivity : AppCompatActivity() {
         database = ArticleApp.getDatabase(this)
 
         database.Articles().getAll().observe(this, Observer {
-            listaArticles = it
+            listArticles = it
 
-            val adapter = ArticleAdapter(this, listaArticles)
+            val adapter = ArticleAdapter(this, listArticles)
 
             lista.adapter = adapter
 
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
         lista.setOnItemClickListener { parent, view, position, id ->
             val intent = Intent(this, newArticle::class.java)
-            intent.putExtra("Article", listaArticles[position])
+            intent.putExtra("Article", listArticles[position])
             intent.putExtra("Edit",true)
             startActivity(intent)
         }
@@ -62,8 +62,8 @@ class MainActivity : AppCompatActivity() {
 
             R.id.AllArticles -> {
                 database.Articles().getAll().observe(this, Observer {
-                    listaArticles = it
-                    val adapter = ArticleAdapter(this, listaArticles)
+                    listArticles = it
+                    val adapter = ArticleAdapter(this, listArticles)
 
                     lista.adapter = adapter
 
@@ -72,8 +72,8 @@ class MainActivity : AppCompatActivity() {
 
             R.id.ArticlesWithDescription -> {
                 database.Articles().getDescription().observe(this, Observer {
-                    listaArticles = it
-                    val adapter = ArticleAdapter(this, listaArticles)
+                    listArticles = it
+                    val adapter = ArticleAdapter(this, listArticles)
 
                     lista.adapter = adapter
 
@@ -83,8 +83,8 @@ class MainActivity : AppCompatActivity() {
 
             R.id.NoHaveStock -> {
                 database.Articles().getWithoutStock().observe(this, Observer {
-                    listaArticles = it
-                    val adapter = ArticleAdapter(this, listaArticles)
+                    listArticles = it
+                    val adapter = ArticleAdapter(this, listArticles)
 
                     lista.adapter = adapter
 
@@ -94,8 +94,8 @@ class MainActivity : AppCompatActivity() {
 
             R.id.HaveStock -> {
                 database.Articles().getWithStock().observe(this, Observer {
-                    listaArticles = it
-                    val adapter = ArticleAdapter(this, listaArticles)
+                    listArticles = it
+                    val adapter = ArticleAdapter(this, listArticles)
 
                     lista.adapter = adapter
 
@@ -104,8 +104,8 @@ class MainActivity : AppCompatActivity() {
 
             R.id.Ascendent -> {
                 database.Articles().getAllAsc().observe(this, Observer {
-                    listaArticles = it
-                    val adapter = ArticleAdapter(this, listaArticles)
+                    listArticles = it
+                    val adapter = ArticleAdapter(this, listArticles)
 
                     lista.adapter = adapter
 
@@ -114,8 +114,8 @@ class MainActivity : AppCompatActivity() {
 
             R.id.Descendent -> {
                 database.Articles().getAllDesc().observe(this, Observer {
-                    listaArticles = it
-                    val adapter = ArticleAdapter(this, listaArticles)
+                    listArticles = it
+                    val adapter = ArticleAdapter(this, listArticles)
 
                     lista.adapter = adapter
 

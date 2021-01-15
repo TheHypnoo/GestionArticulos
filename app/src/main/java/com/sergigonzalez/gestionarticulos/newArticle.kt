@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 
 class newArticle : AppCompatActivity() {
 
-    private lateinit var nombre_et: EditText
+    private lateinit var id_et: EditText
     private lateinit var precio_et: EditText
     private lateinit var descripcion_et: EditText
     private lateinit var familySpinner: Spinner
@@ -29,19 +29,22 @@ class newArticle : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_article)
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         var idArticle: String? = null
 
-        nombre_et = findViewById(R.id.edtCode)
+        id_et = findViewById(R.id.edtCode)
         descripcion_et = findViewById(R.id.edtDes)
         familySpinner = findViewById(R.id.family_spinner)
         precio_et = findViewById(R.id.edtPVP)
         stock_et = findViewById(R.id.edtStock)
         save_btn = findViewById(R.id.save_btn)
+        stock_et.setText("0")
+        stock_et.isEnabled = false
 
         val database = ArticleApp.getDatabase(this)
 
-        ArrayAdapter.createFromResource(this, R.array.family, android.R.layout.simple_spinner_item).also {
-            adapter ->
+        ArrayAdapter.createFromResource(this, R.array.family, android.R.layout.simple_spinner_item).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             familySpinner.adapter = adapter
         }
@@ -59,6 +62,8 @@ class newArticle : AppCompatActivity() {
                     family = "Software"
                 } else if(selectedItem.equals("Altres")){
                     family = "Altres"
+                } else {
+                    family = " "
                 }
             }
         }
@@ -66,13 +71,14 @@ class newArticle : AppCompatActivity() {
         if(intent.hasExtra("Edit")) {
             Edit = intent.getBooleanExtra("Edit", false)
             if(Edit) {
-                nombre_et.isEnabled = false
+                id_et.isEnabled = false
+                stock_et.isEnabled = true
             }
         }
         if (intent.hasExtra("Article")) {
             val article = intent.extras?.getSerializable("Article") as Article
 
-            nombre_et.setText(article.idArticle)
+            id_et.setText(article.idArticle)
             descripcion_et.setText(article.descriptionArticle)
             precio_et.setText(article.priceArticle.toString())
             stock_et.setText(article.stockArticle.toString())
@@ -99,8 +105,8 @@ class newArticle : AppCompatActivity() {
             val stock: Int
             val view: View? = this.currentFocus
 
-            if(!nombre_et.text.toString().isEmpty()) {
-                id = nombre_et.text.toString()
+            if(id_et.text.toString().isNotEmpty()) {
+                id = id_et.text.toString()
             } else {
                 if (view != null) {
                     val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -110,7 +116,7 @@ class newArticle : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            if(!descripcion_et.text.toString().isEmpty()) {
+            if(descripcion_et.text.toString().isNotEmpty()) {
                 descripcion = descripcion_et.text.toString()
             } else {
                 if (view != null) {
@@ -209,6 +215,11 @@ class newArticle : AppCompatActivity() {
         }
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
     private fun snackbarMessage(_message: String) {
         var message = _message
         Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show()
@@ -233,4 +244,5 @@ class newArticle : AppCompatActivity() {
         }
         return a
     }
+
 }

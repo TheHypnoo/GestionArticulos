@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:layout_width="100dp"
-        android:layout_height="match_parent"
+        android:layout_height="225dp"
         android:layout_weight="1"
         android:orientation="vertical">
 
@@ -53,19 +53,29 @@
             android:text="Precio:"
             android:textSize="20dp" />
 
+        <TextView
+            android:id="@+id/textview4"
+            style="@style/TvShowElement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/economica_bold"
+            android:text="Precio con IVA:"
+            android:textSize="20dp" />
+
         <ImageView
             android:id="@+id/Mas"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:layout_weight="1"
+            android:layout_weight="3"
             app:srcCompat="@drawable/ic_add_black_24dp" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="181dp"
-        android:layout_height="match_parent"
+        android:layout_width="171dp"
+        android:layout_height="225dp"
         android:layout_weight="1"
         android:orientation="vertical">
 
@@ -105,12 +115,21 @@
             android:text="TextView"
             android:textSize="19dp" />
 
+        <TextView
+            android:id="@+id/priceWithIVA"
+            style="@style/TvShow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/alegreya_sans_medium"
+            android:text="TextView"
+            android:textSize="19dp" />
+
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="100dp"
-        android:layout_height="match_parent"
+        android:layout_height="225dp"
         android:layout_weight="1"
         android:orientation="vertical">
 
@@ -140,9 +159,9 @@
         <ImageView
             android:id="@+id/Menos"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             app:srcCompat="@drawable/ic_remove_black_24dp" />
 
     </LinearLayout>

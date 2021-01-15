@@ -30,6 +30,7 @@ class ArticleAdapter(private val mContext: Context, private val listArticle: Lis
         val description = layout.findViewById<TextView>(R.id.descriptionArticle)
         val stock = layout.findViewById<TextView>(R.id.stockArticle)
         val price = layout.findViewById<TextView>(R.id.priceArticle)
+        val priceWithIVA = layout.findViewById<TextView>(R.id.priceWithIVA)
 
         val delete = layout.findViewById<ImageView>(R.id.deleteMain)
         val moreStock = layout.findViewById<ImageView>(R.id.Mas)
@@ -38,7 +39,11 @@ class ArticleAdapter(private val mContext: Context, private val listArticle: Lis
         id.text = article.idArticle
         description.text = article.descriptionArticle
         stock.text = article.stockArticle.toString()
-        price.text = "${article.priceArticle}€"
+        "${article.priceArticle}€".also { price.text = it }
+
+        val IVA = article.priceArticle * 0.21 + article.priceArticle
+        "${IVA.toString()}€".also { priceWithIVA.text = it }
+
 
         if (stock.text.toString().toInt() <= 0) {
 
@@ -47,7 +52,7 @@ class ArticleAdapter(private val mContext: Context, private val listArticle: Lis
 
         delete.setOnClickListener {
             val builder = AlertDialog.Builder(mContext)
-            builder.setMessage("Estas seguro que deseas eliminar el registro?")
+            builder.setMessage("Estas seguro que deseas eliminar el Articulo?")
 
             builder.setPositiveButton(android.R.string.ok) { dialog, which ->
                 CoroutineScope(Dispatchers.IO).launch {
