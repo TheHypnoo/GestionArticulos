@@ -221,8 +221,7 @@ class newArticle : AppCompatActivity() {
     }
 
     private fun snackbarMessage(_message: String) {
-        var message = _message
-        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(findViewById(android.R.id.content), _message, Snackbar.LENGTH_SHORT).show()
     }
 
     private fun TryCatchDouble(_string: String?): Boolean {
