@@ -13,11 +13,11 @@ import java.sql.Date
         indices = [Index(value = ["idArticle", "idArticle"])])
 class Movement (
     @PrimaryKey(autoGenerate = false)
-    @ColumnInfo(name = "idArticle")
+    @ColumnInfo(name = "idArticle", index = true)
     @NotNull
     var idArticle: String,
     @ColumnInfo(name = "day")
-    val day: Date,
+    val day: String,
     @ColumnInfo(name = "quantity")
     val quantity: Int,
     @ColumnInfo(name = "type")

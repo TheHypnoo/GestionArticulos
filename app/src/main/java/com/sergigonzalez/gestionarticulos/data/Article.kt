@@ -9,7 +9,7 @@ import java.io.Serializable
 @Entity(tableName = "Articles")
 class Article(
     @PrimaryKey(autoGenerate = false)
-    @ColumnInfo(name = "idArticle")
+    @ColumnInfo(name = "idArticle", index = true)
     @NotNull
     var idArticle: String,
     @ColumnInfo(name = "descriptionArticle")

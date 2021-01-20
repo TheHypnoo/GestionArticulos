@@ -8,7 +8,8 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 
-@Database(entities = [Article::class], version = 2)
+//@Database(entities = [Article::class, Movement::class], version = 2)
+@Database(entities = [Article::class], version = 1)
 abstract class ArticleApp : RoomDatabase() {
 
     abstract fun Articles(): ArticleDAO
@@ -29,16 +30,24 @@ abstract class ArticleApp : RoomDatabase() {
                         context.applicationContext,
                         ArticleApp::class.java,
                         "Articles"
-                ).addMigrations(MIGRATION_1_2).build()
+                ).fallbackToDestructiveMigration().build()
+                        //.addMigrations(MIGRATION_1_2).build()
 
                 INSTANCE = instance
 
                 return instance
             }
         }
-        val MIGRATION_1_2: Migration = object : Migration(1, 2) {
+        private val MIGRATION_1_2: Migration = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                // Since we didn't alter the table, there's nothing else to do here.
+                /*database.execSQL("""
+                CREATE TABLE Movement (
+                    id INTEGER PRIMARY KEY NOT NULL,
+                    name TEXT,
+                    tag TEXT NOT NULL DEFAULT ''
+                )
+                """.trimIndent())
+                 */
             }
         }
     }
