@@ -38,13 +38,11 @@
         android:title="Z - A"
         app:showAsAction="never">
     </item>
-    <!---
     <item
         android:id="@+id/Movements"
         android:icon="@drawable/ic_move_to_inbox_black_24dp"
         android:title="Movements"
         app:showAsAction="ifRoom">
     </item>
-    -->
 
 </menu>

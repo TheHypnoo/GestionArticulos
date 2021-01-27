@@ -8,8 +8,8 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 
-//@Database(entities = [Article::class, Movement::class], version = 2)
-@Database(entities = [Article::class], version = 1)
+@Database(entities = [Article::class, Movement::class], version = 2)
+//@Database(entities = [Article::class], version = 1)
 abstract class ArticleApp : RoomDatabase() {
 
     abstract fun Articles(): ArticleDAO
@@ -31,7 +31,8 @@ abstract class ArticleApp : RoomDatabase() {
                         ArticleApp::class.java,
                         "Articles"
                 ).fallbackToDestructiveMigration().build()
-                        //.addMigrations(MIGRATION_1_2).build()
+
+                    //.addMigrations(MIGRATION_1_2).build()
 
                 INSTANCE = instance
 
@@ -40,14 +41,16 @@ abstract class ArticleApp : RoomDatabase() {
         }
         private val MIGRATION_1_2: Migration = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                /*database.execSQL("""
-                CREATE TABLE Movement (
-                    id INTEGER PRIMARY KEY NOT NULL,
-                    name TEXT,
-                    tag TEXT NOT NULL DEFAULT ''
-                )
-                """.trimIndent())
-                 */
+                if(database.version < 1) {
+                    database.execSQL(
+                        "CREATE TABLE Movement " +
+                                "idArticle TEXT NOT NULL,"
+                                + "day TEXT NOT NULL," +
+                                "quantity INTEGER NOT NULL," +
+                                "type VARCHAR(1) NOT NULL,"
+                                + "FOREIGN KEY(idArticle) REFERENCES Article(idArticle) ON DELETE CASCADE)"
+                    )
+                }
             }
         }
     }

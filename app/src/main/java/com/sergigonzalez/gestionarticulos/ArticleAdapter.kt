@@ -3,14 +3,16 @@ package com.sergigonzalez.gestionarticulos
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
+import android.database.Cursor
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.google.android.material.snackbar.Snackbar
 import com.sergigonzalez.gestionarticulos.data.Article
 import com.sergigonzalez.gestionarticulos.data.ArticleApp
+import com.sergigonzalez.gestionarticulos.data.Movement
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,13 +27,17 @@ class ArticleAdapter(private val mContext: Context, private val listArticle: Lis
     private var _year = c[Calendar.YEAR]
     private var _month = c[Calendar.MONTH]
     private var _day = c[Calendar.DAY_OF_MONTH]
+    private var _main: MainActivity? = null
+
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        _main = context as MainActivity?
         val layout = LayoutInflater.from(mContext).inflate(R.layout.item_article, parent, false)
         database = ArticleApp.getDatabase(mContext)
         val article = listArticle[position]
 
         val linearLayoutArticle = layout.findViewById<LinearLayout>(R.id.Article)
+        val movement = layout.findViewById<ImageView>(R.id.Storie)
 
         val id = layout.findViewById<TextView>(R.id.idArticle)
         val description = layout.findViewById<TextView>(R.id.descriptionArticle)
@@ -128,6 +134,10 @@ class ArticleAdapter(private val mContext: Context, private val listArticle: Lis
             stockDate(article, false)
         }
 
+        movement.setOnClickListener{
+            _main?.startActivity(Intent(context, Movements::class.java))
+        }
+
         return layout
     }
 
@@ -165,17 +175,22 @@ class ArticleAdapter(private val mContext: Context, private val listArticle: Lis
         _alert.setButton(AlertDialog.BUTTON_POSITIVE, "Aceptar", DialogInterface.OnClickListener { dialog, whichButton ->
             try {
                 dates = DialogCalendar.ChangeFormatDate(tv.text.toString(), "dd/MM/yyyy", "yyyy/MM/dd")
-                //var Num_Stock = java.lang.Long.valueOf(stock.text.toString())
-                if(moreOrLess) {
+                var Num_Stock = java.lang.Long.valueOf(stock.text.toString())
+                if (moreOrLess) {
                     val sumaStock = article.stockArticle.toString().toInt() + stock.text.toString().toInt()
                     article.stockArticle = sumaStock
                 } else {
                     val restaStock = article.stockArticle.toString().toInt() - stock.text.toString().toInt()
                     article.stockArticle = restaStock
                 }
+
+                val movement = Movement(article.idArticle, dates.toString(),stock.text.toString().toInt(),'E')
+
                 CoroutineScope(Dispatchers.IO).launch {
                     database.Articles().update(article)
+                    database.Articles().updateMovement(movement)
                 }
+                Toast.makeText(context,"Movimiento y Articulo actualizado",Toast.LENGTH_SHORT)
             } catch (e: Exception) {
                 Toast.makeText(context, "El stock no ha sido modificado ya que no has introducido ningún valor.", Toast.LENGTH_SHORT).show()
                 return@OnClickListener
@@ -186,5 +201,7 @@ class ArticleAdapter(private val mContext: Context, private val listArticle: Lis
 
         _alert.show()
     }
+
+
 
 }

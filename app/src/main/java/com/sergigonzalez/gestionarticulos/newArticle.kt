@@ -95,9 +95,6 @@ class newArticle : AppCompatActivity() {
             idArticle = article.idArticle
         }
 
-
-
-
         save_btn.setOnClickListener {
             val id : String
             val descripcion: String

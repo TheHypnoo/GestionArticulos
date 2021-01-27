@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         lista.setOnItemClickListener { parent, view, position, id ->
             val intent = Intent(this, newArticle::class.java)
             intent.putExtra("Article", listArticles[position])
-            intent.putExtra("Edit",true)
+            intent.putExtra("Edit", true)
             startActivity(intent)
         }
 
@@ -120,6 +120,9 @@ class MainActivity : AppCompatActivity() {
                     lista.adapter = adapter
 
                 })
+            }
+            R.id.Movements -> {
+                startActivity(Intent(this, Movements_All::class.java))
             }
         }
 
