@@ -174,14 +174,14 @@ class newArticle : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val article = Article(id, descripcion, family, precio, stock)
+            //val article = Article(id, descripcion, family, precio, stock)
 
                 if (idArticle != null) {
 
                     CoroutineScope(Dispatchers.IO).launch {
-                        article.idArticle = idArticle
+                        //article.idArticle = idArticle
 
-                        database.Articles().update(article)
+                        //database.Articles().update(article)
 
                         if (view != null) {
                             val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -195,7 +195,7 @@ class newArticle : AppCompatActivity() {
 
                     CoroutineScope(Dispatchers.IO).launch {
                         try {
-                        database.Articles().insertAll(article)
+                        //database.Articles().insertAll(article)
 
                         this@newArticle.finish()
                         } catch (e: SQLiteConstraintException) {

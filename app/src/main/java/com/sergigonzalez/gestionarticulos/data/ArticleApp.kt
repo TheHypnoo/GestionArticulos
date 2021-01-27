@@ -42,6 +42,7 @@ abstract class ArticleApp : RoomDatabase() {
         private val MIGRATION_1_2: Migration = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 if(database.version < 1) {
+                    //Todavía debo probar...
                     database.execSQL(
                         "CREATE TABLE Movement " +
                                 "idArticle TEXT NOT NULL,"

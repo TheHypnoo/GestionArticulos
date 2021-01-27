@@ -28,20 +28,18 @@ interface ArticleDAO {
 
     @Insert
     fun insertAll(vararg Articles: Article)
-/*
-@Insert
+
+    @Insert
     fun insertArticle(idArticle: String,descriptionArticle: String,familyArticle: String,priceArticle: Double,stockArticle: Int)
-
-      @Insert
-    fun insertMovement(Movement: Movement)
- */
-
 
     @Update
     fun update(Article: Article)
 
     @Update
     fun updateMovement(Movement: Movement)
+
+    @Insert
+    fun insertMovement(Movement: Movement)
 
     @Delete
     fun delete(Article: Article)

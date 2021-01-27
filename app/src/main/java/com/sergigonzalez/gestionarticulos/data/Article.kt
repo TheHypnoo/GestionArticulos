@@ -8,9 +8,11 @@ import java.io.Serializable
 
 @Entity(tableName = "Articles")
 class Article(
-    @PrimaryKey(autoGenerate = false)
-    @ColumnInfo(name = "idArticle", index = true)
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
     @NotNull
+    var id_: Int,
+    @ColumnInfo(name = "idArticle")
     var idArticle: String,
     @ColumnInfo(name = "descriptionArticle")
     val descriptionArticle: String,

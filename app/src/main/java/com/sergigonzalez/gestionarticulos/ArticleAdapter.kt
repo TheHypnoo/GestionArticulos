@@ -184,11 +184,11 @@ class ArticleAdapter(private val mContext: Context, private val listArticle: Lis
                     article.stockArticle = restaStock
                 }
 
-                val movement = Movement(article.idArticle, dates.toString(),stock.text.toString().toInt(),'E')
+                //val movement = Movement(article.idArticle, dates.toString(),stock.text.toString().toInt(),'E')
 
                 CoroutineScope(Dispatchers.IO).launch {
                     database.Articles().update(article)
-                    database.Articles().updateMovement(movement)
+                    //database.Articles().updateMovement(movement)
                 }
                 Toast.makeText(context,"Movimiento y Articulo actualizado",Toast.LENGTH_SHORT)
             } catch (e: Exception) {
