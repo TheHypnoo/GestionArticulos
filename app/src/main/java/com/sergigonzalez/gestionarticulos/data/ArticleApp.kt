@@ -8,7 +8,7 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 
-@Database(entities = [Article::class, Movement::class], version = 2)
+@Database(entities = [Article::class, Movement::class], version = 4)
 //@Database(entities = [Article::class], version = 1)
 abstract class ArticleApp : RoomDatabase() {
 
@@ -31,28 +31,36 @@ abstract class ArticleApp : RoomDatabase() {
                         ArticleApp::class.java,
                         "Articles"
                 ).fallbackToDestructiveMigration().build()
-
-                    //.addMigrations(MIGRATION_1_2).build()
+                //.addMigrations(MIGRATION_1_2).build()
 
                 INSTANCE = instance
 
                 return instance
             }
         }
+        /*
         private val MIGRATION_1_2: Migration = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                if(database.version < 1) {
                     //Todavía debo probar...
+                        database.execSQL("DROP TABLE Article")
+                        database.execSQL("DROP TABLE Movement")
+                        database.execSQL("CREATE TABLE Article (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                            "idArticle TEXT NOT NULL," +
+                            "descriptionArticle TEXT NOT NULL," +
+                            "familyArticle TEXT NOT NULL," +
+                            "priceArticle REAL NOT NULL," +
+                            "stockArticle INTEGER NOT NULL DEFAULT 0)")
                     database.execSQL(
-                        "CREATE TABLE Movement " +
-                                "idArticle TEXT NOT NULL,"
-                                + "day TEXT NOT NULL," +
+                        "CREATE TABLE Movement (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                "idArticleMovement TEXT NOT NULL," +
+                                "dayArticle TEXT NOT NULL," +
                                 "quantity INTEGER NOT NULL," +
-                                "type VARCHAR(1) NOT NULL,"
-                                + "FOREIGN KEY(idArticle) REFERENCES Article(idArticle) ON DELETE CASCADE)"
+                                "type VARCHAR(1) NOT NULL," +
+                                "idArticle INTEGER NOT NULL," +
+                                "FOREIGN KEY(idArticle) REFERENCES Article(_id) ON DELETE CASCADE)"
                     )
-                }
             }
-        }
+         */
+        //}
     }
 }

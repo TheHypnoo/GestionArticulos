@@ -29,9 +29,6 @@ interface ArticleDAO {
     @Insert
     fun insertAll(vararg Articles: Article)
 
-    @Insert
-    fun insertArticle(idArticle: String,descriptionArticle: String,familyArticle: String,priceArticle: Double,stockArticle: Int)
-
     @Update
     fun update(Article: Article)
 
@@ -39,7 +36,7 @@ interface ArticleDAO {
     fun updateMovement(Movement: Movement)
 
     @Insert
-    fun insertMovement(Movement: Movement)
+    fun insertMovement(vararg Movement: Movement)
 
     @Delete
     fun delete(Article: Article)

@@ -7,21 +7,20 @@ import java.sql.Date
 
 
 @Entity(tableName = "Movement",foreignKeys = [ForeignKey(entity = Article::class,
-        parentColumns = arrayOf("_id"),
-        childColumns = arrayOf("_idTableArticle"),
+        parentColumns = arrayOf("idArticle"),
+        childColumns = arrayOf("idTableArticle"),
         onDelete = ForeignKey.CASCADE)])
 class Movement (
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_id")
-    @NotNull
     var _id: Int,
-    var idArticle: String,
+    var idArticleMovement: String,
     @ColumnInfo(name = "day")
     val day: String,
     @ColumnInfo(name = "quantity")
     val quantity: Int,
     @ColumnInfo(name = "type")
     val type: Char,
-    @ColumnInfo(name = "_idTableArticle")
-    var _idTableArticle: Int
+    @ColumnInfo(name = "idTableArticle")
+    var idTableArticle: String
 ) : Serializable

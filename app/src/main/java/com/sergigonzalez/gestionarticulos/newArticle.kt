@@ -7,6 +7,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import com.sergigonzalez.gestionarticulos.data.Article
 import com.sergigonzalez.gestionarticulos.data.ArticleApp
@@ -174,14 +175,29 @@ class newArticle : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            //val article = Article(id, descripcion, family, precio, stock)
+            var article = Article(0,id, descripcion, family, precio, stock)
+            val auxArticle = article
 
                 if (idArticle != null) {
 
-                    CoroutineScope(Dispatchers.IO).launch {
-                        //article.idArticle = idArticle
+                    database.Articles().get(idArticle).observe(this, Observer {
+                        article = it
 
-                        //database.Articles().update(article)
+                        if(article.idArticle == auxArticle.idArticle) {
+                            snackbarMessage("Ya existe el mismo codigo!")
+                            this@newArticle.finish()
+                            if (view != null) {
+                                val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                                imm.hideSoftInputFromWindow(view.windowToken, 0)
+                            }
+
+                        }
+
+                    })
+
+                    CoroutineScope(Dispatchers.IO).launch {
+                        article.idArticle = idArticle
+                        database.Articles().update(article)
 
                         if (view != null) {
                             val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -192,10 +208,24 @@ class newArticle : AppCompatActivity() {
                         this@newArticle.finish()
                     }
                 } else {
+/*
+                    database.Articles().get(id).observe(this, Observer {
+
+                        if(it.idArticle == auxArticle.idArticle) {
+                            snackbarMessage("Ya existe el mismo codigo!")
+                            this@newArticle.finish()
+                            if (view != null) {
+                                val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                                imm.hideSoftInputFromWindow(view.windowToken, 0)
+                            }
+
+                        }
+
+                    })*/
 
                     CoroutineScope(Dispatchers.IO).launch {
                         try {
-                        //database.Articles().insertAll(article)
+                        database.Articles().insertAll(article)
 
                         this@newArticle.finish()
                         } catch (e: SQLiteConstraintException) {
