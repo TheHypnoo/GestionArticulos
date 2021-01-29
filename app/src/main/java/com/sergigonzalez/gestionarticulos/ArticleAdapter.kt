@@ -135,7 +135,9 @@ class ArticleAdapter(private val mContext: Context, private val listArticle: Lis
         }
 
         movement.setOnClickListener{
-            _main?.startActivity(Intent(context, Movements::class.java))
+            val intent = Intent(context, Movements::class.java)
+            intent.putExtra("idArticle", article.idArticle)
+            _main?.startActivity(intent)
         }
 
         return layout
@@ -171,6 +173,7 @@ class ArticleAdapter(private val mContext: Context, private val listArticle: Lis
         dialogView.findViewById<View>(R.id.calendardata).setOnClickListener { v -> DialogCalendar.Dialog(v.context, tv) }
 
         _alert.setView(dialogView)
+        var type = 'N'
 
         _alert.setButton(AlertDialog.BUTTON_POSITIVE, "Aceptar", DialogInterface.OnClickListener { dialog, whichButton ->
             try {
@@ -179,12 +182,14 @@ class ArticleAdapter(private val mContext: Context, private val listArticle: Lis
                 if (moreOrLess) {
                     val sumaStock = article.stockArticle.toString().toInt() + stock.text.toString().toInt()
                     article.stockArticle = sumaStock
+                    type = 'E'
                 } else {
                     val restaStock = article.stockArticle.toString().toInt() - stock.text.toString().toInt()
                     article.stockArticle = restaStock
+                    type = 'S'
                 }
 
-                val movement = Movement(0,article.idArticle, dates.toString(),stock.text.toString().toInt(),'E',article.idArticle)
+                val movement = Movement(0,article.idArticle, dates.toString(),stock.text.toString().toInt(),type)
 
                 CoroutineScope(Dispatchers.IO).launch {
                     database.Articles().update(article)
@@ -201,7 +206,5 @@ class ArticleAdapter(private val mContext: Context, private val listArticle: Lis
 
         _alert.show()
     }
-
-
 
 }

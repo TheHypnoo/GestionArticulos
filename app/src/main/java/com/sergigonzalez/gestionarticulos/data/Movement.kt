@@ -8,7 +8,7 @@ import java.sql.Date
 
 @Entity(tableName = "Movement",foreignKeys = [ForeignKey(entity = Article::class,
         parentColumns = arrayOf("idArticle"),
-        childColumns = arrayOf("idTableArticle"),
+        childColumns = arrayOf("idArticleMovement"),
         onDelete = ForeignKey.CASCADE)])
 class Movement (
     @PrimaryKey(autoGenerate = true)
@@ -21,6 +21,4 @@ class Movement (
     val quantity: Int,
     @ColumnInfo(name = "type")
     val type: Char,
-    @ColumnInfo(name = "idTableArticle")
-    var idTableArticle: String
 ) : Serializable

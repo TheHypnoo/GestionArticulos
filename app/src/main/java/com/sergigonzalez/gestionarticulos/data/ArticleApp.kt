@@ -8,7 +8,7 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 
-@Database(entities = [Article::class, Movement::class], version = 4)
+@Database(entities = [Article::class, Movement::class], version = 5)
 //@Database(entities = [Article::class], version = 1)
 abstract class ArticleApp : RoomDatabase() {
 
