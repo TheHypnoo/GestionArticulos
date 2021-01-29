@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -26,14 +27,16 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/economica_bold"
             android:text="@string/Code"
-            android:textSize="22dp" />
+            android:textSize="22sp" />
 
         <EditText
             android:id="@+id/edtCode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:autofillHints=""
+            tools:ignore="LabelFor" />
 
         <TextView
             android:id="@+id/textView2"
@@ -42,14 +45,16 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/economica_bold"
             android:text="@string/Des"
-            android:textSize="22dp" />
+            android:textSize="22sp" />
 
         <EditText
             android:id="@+id/edtDes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:autofillHints=""
+            tools:ignore="LabelFor" />
 
         <TextView
             android:id="@+id/textView5"
@@ -57,8 +62,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/economica_bold"
-            android:text="Categoria"
-            android:textSize="22dp" />
+            android:text="@string/category"
+            android:textSize="22sp" />
 
         <Spinner
             android:id="@+id/family_spinner"
@@ -76,14 +81,16 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/economica_bold"
             android:text="@string/Money"
-            android:textSize="22dp" />
+            android:textSize="22sp" />
 
         <EditText
             android:id="@+id/edtPVP"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:autofillHints=""
+            tools:ignore="LabelFor" />
 
         <TextView
             android:id="@+id/textView4"
@@ -92,7 +99,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/economica_bold"
             android:text="@string/Stock"
-            android:textSize="22dp" />
+            android:textSize="22sp" />
 
         <EditText
             android:id="@+id/edtStock"
@@ -100,7 +107,9 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:textSize="18dp" />
+            android:textSize="18sp"
+            android:autofillHints=""
+            tools:ignore="LabelFor" />
 
 
         <Space
@@ -112,7 +121,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Guardar" />
+            android:text="@string/save" />
 
     </LinearLayout>
 
