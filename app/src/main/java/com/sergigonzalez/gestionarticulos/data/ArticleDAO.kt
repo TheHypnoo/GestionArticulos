@@ -8,6 +8,9 @@ interface ArticleDAO {
     @Query("SELECT * FROM Articles")
     fun getAll(): LiveData<List<Article>>
 
+    @Query("SELECT * FROM MOVEMENT")
+    fun getAllMovements(): LiveData<List<Movement>>
+
     @Query("SELECT * FROM Articles ORDER BY idArticle ASC")
     fun getAllAsc(): LiveData<List<Article>>
 
