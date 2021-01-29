@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,14 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="Codigo:" />
+        android:text="@string/code" />
 
     <TextView
         android:id="@+id/textView9"
         style="@style/TvShow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cantidad:"
+        android:text="@string/quantity"
         android:layout_margin="10dp"/>
 
     <EditText
@@ -26,7 +27,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:ems="10"
-        android:inputType="number" />
+        android:inputType="number"
+        android:autofillHints=""
+        tools:ignore="LabelFor" />
 
     <TextView
         android:id="@+id/textView8"
@@ -34,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="Fecha:" />
+        android:text="@string/date" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -46,15 +49,16 @@
             android:layout_width="188dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="1900/10/02" />
+            android:text="@string/dateExample" />
 
         <ImageView
             android:id="@+id/calendardata"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
             android:layout_weight="1"
-            app:srcCompat="@drawable/ic_today_black_24dp" />
+            app:srcCompat="@drawable/ic_today_black_24dp"
+            android:contentDescription="@string/todo" />
     </LinearLayout>
 
 </LinearLayout>

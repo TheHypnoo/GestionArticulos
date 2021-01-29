@@ -6,12 +6,13 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.sergigonzalez.gestionarticulos.adapters.ArticleAdapter
 import com.sergigonzalez.gestionarticulos.data.Article
 import com.sergigonzalez.gestionarticulos.data.ArticleApp
 
 class MainActivity : AppCompatActivity() {
+
     private lateinit var lista: ListView
     private lateinit var addArticle: FloatingActionButton
     private lateinit var database: ArticleApp
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         addArticle = findViewById(R.id.addArticle)
         database = ArticleApp.getDatabase(this)
 
-        database.Articles().getAll().observe(this, Observer {
+        database.Articles().getAll().observe(this, {
             listArticles = it
 
             val adapter = ArticleAdapter(this, listArticles)
@@ -33,35 +34,32 @@ class MainActivity : AppCompatActivity() {
 
         })
 
-        lista.setOnItemClickListener { parent, view, position, id ->
-            val intent = Intent(this, newArticle::class.java)
+        lista.setOnItemClickListener { _, _, position, _ ->
+            val intent = Intent(this, NewArticle::class.java)
             intent.putExtra("Article", listArticles[position])
             intent.putExtra("Edit", true)
             startActivity(intent)
         }
 
-
         addArticle.setOnClickListener {
-            val intent = Intent(this, newArticle::class.java)
+            val intent = Intent(this, NewArticle::class.java)
             startActivity(intent)
         }
 
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-
+        // Inflated the menu to filter
         val inflater = menuInflater
         inflater.inflate(R.menu.menu_main, menu)
-
         return super.onCreateOptionsMenu(menu)
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-
+            //All filters
             R.id.AllArticles -> {
-                database.Articles().getAll().observe(this, Observer {
+                database.Articles().getAll().observe(this, {
                     listArticles = it
                     val adapter = ArticleAdapter(this, listArticles)
 
@@ -71,7 +69,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.ArticlesWithDescription -> {
-                database.Articles().getDescription().observe(this, Observer {
+                database.Articles().getDescription().observe(this, {
                     listArticles = it
                     val adapter = ArticleAdapter(this, listArticles)
 
@@ -80,9 +78,8 @@ class MainActivity : AppCompatActivity() {
                 })
             }
 
-
             R.id.NoHaveStock -> {
-                database.Articles().getWithoutStock().observe(this, Observer {
+                database.Articles().getWithoutStock().observe(this, {
                     listArticles = it
                     val adapter = ArticleAdapter(this, listArticles)
 
@@ -93,7 +90,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.HaveStock -> {
-                database.Articles().getWithStock().observe(this, Observer {
+                database.Articles().getWithStock().observe(this, {
                     listArticles = it
                     val adapter = ArticleAdapter(this, listArticles)
 
@@ -103,7 +100,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.Ascendent -> {
-                database.Articles().getAllAsc().observe(this, Observer {
+                database.Articles().getAllAsc().observe(this, {
                     listArticles = it
                     val adapter = ArticleAdapter(this, listArticles)
 
@@ -113,7 +110,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.Descendent -> {
-                database.Articles().getAllDesc().observe(this, Observer {
+                database.Articles().getAllDesc().observe(this, {
                     listArticles = it
                     val adapter = ArticleAdapter(this, listArticles)
 
@@ -121,8 +118,10 @@ class MainActivity : AppCompatActivity() {
 
                 })
             }
+
+            //Intent Movements All
             R.id.Movements -> {
-                startActivity(Intent(this, Movements_All::class.java))
+                startActivity(Intent(this, MovementsAll::class.java))
             }
         }
 

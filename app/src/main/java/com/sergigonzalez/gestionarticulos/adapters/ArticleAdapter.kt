@@ -1,15 +1,19 @@
-package com.sergigonzalez.gestionarticulos
+package com.sergigonzalez.gestionarticulos.adapters
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.database.Cursor
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.sergigonzalez.gestionarticulos.DialogCalendar
+import com.sergigonzalez.gestionarticulos.MainActivity
+import com.sergigonzalez.gestionarticulos.Movements
+import com.sergigonzalez.gestionarticulos.R
 import com.sergigonzalez.gestionarticulos.data.Article
 import com.sergigonzalez.gestionarticulos.data.ArticleApp
 import com.sergigonzalez.gestionarticulos.data.Movement
@@ -20,7 +24,7 @@ import java.util.*
 
 class ArticleAdapter(private val mContext: Context, private val listArticle: List<Article>) : ArrayAdapter<Article>(mContext, 0, listArticle) {
 
-    private val NoHaveStock = "#d78290"
+    private val noHaveStock = "#d78290"
     private lateinit var database: ArticleApp
     private val c = Calendar.getInstance()
     private var dates: String? = null
@@ -30,6 +34,7 @@ class ArticleAdapter(private val mContext: Context, private val listArticle: Lis
     private var _main: MainActivity? = null
 
 
+    @SuppressLint("ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         _main = context as MainActivity?
         val layout = LayoutInflater.from(mContext).inflate(R.layout.item_article, parent, false)
@@ -54,26 +59,26 @@ class ArticleAdapter(private val mContext: Context, private val listArticle: Lis
         stock.text = article.stockArticle.toString()
         "${article.priceArticle}€".also { price.text = it }
 
-        val IVA = article.priceArticle * 0.21 + article.priceArticle
-        "${IVA}€".also { priceWithIVA.text = it }
+        val priceIVA = article.priceArticle * 0.21 + article.priceArticle
+        "${priceIVA}€".also { priceWithIVA.text = it }
 
 
         if (stock.text.toString().toInt() <= 0) {
 
-            linearLayoutArticle!!.setBackgroundColor(Color.parseColor(NoHaveStock))
+            linearLayoutArticle!!.setBackgroundColor(Color.parseColor(noHaveStock))
         }
 
         delete.setOnClickListener {
             val builder = AlertDialog.Builder(mContext)
             builder.setMessage("Estas seguro que deseas eliminar el Articulo?")
 
-            builder.setPositiveButton(android.R.string.ok) { dialog, which ->
+            builder.setPositiveButton(android.R.string.ok) { _, _ ->
                 CoroutineScope(Dispatchers.IO).launch {
                     database.Articles().delete(article)
                 }
             }
 
-            builder.setNegativeButton(android.R.string.cancel) { dialog, which ->
+            builder.setNegativeButton(android.R.string.cancel) { dialog, _ ->
                 dialog.dismiss()
             }
 
@@ -143,11 +148,12 @@ class ArticleAdapter(private val mContext: Context, private val listArticle: Lis
         return layout
     }
 
+    @SuppressLint("SetTextI18n", "ShowToast")
     private fun stockDate(article: Article, moreOrLess: Boolean){
         _year = c[Calendar.YEAR]
         _month = c[Calendar.MONTH]
         _day = c[Calendar.DAY_OF_MONTH]
-        val _alert: AlertDialog = AlertDialog.Builder(context).create()
+        val alert: AlertDialog = AlertDialog.Builder(context).create()
 
         val dialogView = LayoutInflater.from(context).inflate(R.layout.calendar, null)
 
@@ -158,27 +164,26 @@ class ArticleAdapter(private val mContext: Context, private val listArticle: Lis
 
         tv = dialogView.findViewById<View>(R.id.calendar) as TextView
 
-        if (_month < 10 && _day < 10) {
-            dates = "0" + _day + "/" + "0" + (_month + 1) + "/" + _year
+        dates = if (_month < 10 && _day < 10) {
+            "0" + _day + "/" + "0" + (_month + 1) + "/" + _year
         } else if (_month < 10) {
-            dates = _day.toString() + "/" + "0" + (_month + 1) + "/" + _year
+            _day.toString() + "/" + "0" + (_month + 1) + "/" + _year
         } else if (_day < 10) {
-            dates = "0" + _day + "/" + (_month + 1) + "/" + _year
+            "0" + _day + "/" + (_month + 1) + "/" + _year
         } else {
-            dates = _day.toString() + "/" + (_month + 1) + "/" + _year
+            _day.toString() + "/" + (_month + 1) + "/" + _year
         }
 
         tv.text = dates
 
-        dialogView.findViewById<View>(R.id.calendardata).setOnClickListener { v -> DialogCalendar.Dialog(v.context, tv) }
+        dialogView.findViewById<View>(R.id.calendardata).setOnClickListener { v -> DialogCalendar.dialog(v.context, tv) }
 
-        _alert.setView(dialogView)
-        var type = 'N'
+        alert.setView(dialogView)
+        var type: Char
 
-        _alert.setButton(AlertDialog.BUTTON_POSITIVE, "Aceptar", DialogInterface.OnClickListener { dialog, whichButton ->
+        alert.setButton(AlertDialog.BUTTON_POSITIVE, "Aceptar", DialogInterface.OnClickListener { _, _ ->
             try {
-                dates = DialogCalendar.ChangeFormatDate(tv.text.toString(), "dd/MM/yyyy", "yyyy/MM/dd")
-                var Num_Stock = java.lang.Long.valueOf(stock.text.toString())
+                dates = DialogCalendar.changeFormatDate(tv.text.toString(), "dd/MM/yyyy", "yyyy/MM/dd")
                 if (moreOrLess) {
                     val sumaStock = article.stockArticle.toString().toInt() + stock.text.toString().toInt()
                     article.stockArticle = sumaStock
@@ -202,9 +207,9 @@ class ArticleAdapter(private val mContext: Context, private val listArticle: Lis
             }
         })
 
-        _alert.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancelar") { dialog, whichButton -> }
+        alert.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancelar") { _, _ -> }
 
-        _alert.show()
+        alert.show()
     }
 
 }

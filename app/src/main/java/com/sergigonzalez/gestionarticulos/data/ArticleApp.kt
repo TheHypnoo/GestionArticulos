@@ -7,9 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-
-@Database(entities = [Article::class, Movement::class], version = 5)
-//@Database(entities = [Article::class], version = 1)
+@Database(entities = [Article::class, Movement::class], version = 2)
 abstract class ArticleApp : RoomDatabase() {
 
     abstract fun Articles(): ArticleDAO
@@ -30,37 +28,28 @@ abstract class ArticleApp : RoomDatabase() {
                         context.applicationContext,
                         ArticleApp::class.java,
                         "Articles"
-                ).fallbackToDestructiveMigration().build()
-                //.addMigrations(MIGRATION_1_2).build()
+                ).addMigrations(MIGRATION_1_2).build()
+                //.fallbackToDestructiveMigration().build()
 
                 INSTANCE = instance
 
                 return instance
             }
         }
-        /*
+
         private val MIGRATION_1_2: Migration = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                    //Todavía debo probar...
-                        database.execSQL("DROP TABLE Article")
-                        database.execSQL("DROP TABLE Movement")
-                        database.execSQL("CREATE TABLE Article (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                            "idArticle TEXT NOT NULL," +
-                            "descriptionArticle TEXT NOT NULL," +
-                            "familyArticle TEXT NOT NULL," +
-                            "priceArticle REAL NOT NULL," +
-                            "stockArticle INTEGER NOT NULL DEFAULT 0)")
+                  //Si la version es inferior, creo la nueva tabla de Movements para implementar las nuevas funcionalidades!
+                if(database.version < 1) {
                     database.execSQL(
                         "CREATE TABLE Movement (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                                 "idArticleMovement TEXT NOT NULL," +
-                                "dayArticle TEXT NOT NULL," +
+                                "day TEXT NOT NULL," +
                                 "quantity INTEGER NOT NULL," +
                                 "type VARCHAR(1) NOT NULL," +
-                                "idArticle INTEGER NOT NULL," +
-                                "FOREIGN KEY(idArticle) REFERENCES Article(_id) ON DELETE CASCADE)"
-                    )
+                                "FOREIGN KEY(idArticleMovement) REFERENCES Article(idArticle) ON DELETE CASCADE)")
+                }
             }
-         */
-        //}
+        }
     }
 }

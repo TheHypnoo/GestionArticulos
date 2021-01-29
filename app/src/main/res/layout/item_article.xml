@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/Article">
+    android:id="@+id/Article"
+    android:baselineAligned="false">
 
     <LinearLayout
         android:layout_width="100dp"
@@ -20,8 +21,9 @@
             android:layout_weight="1"
             android:fontFamily="@font/economica_bold"
             android:text="@string/Code"
-            android:textSize="20dp"
-            android:textStyle="bold" />
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:ignore="NestedWeights" />
 
         <TextView
             android:id="@+id/textview3"
@@ -30,8 +32,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="@font/economica_bold"
-            android:text="Descripcion:"
-            android:textSize="20dp" />
+            android:text="@string/Des"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/textview2"
@@ -41,7 +43,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/economica_bold"
             android:text="@string/Stock"
-            android:textSize="20dp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/textview"
@@ -50,8 +52,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="@font/economica_bold"
-            android:text="Precio:"
-            android:textSize="20dp" />
+            android:text="@string/Money"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/textview4"
@@ -60,8 +62,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="@font/economica_bold"
-            android:text="Precio con IVA:"
-            android:textSize="20dp" />
+            android:text="@string/MoneyWithIVA"
+            android:textSize="20sp" />
 
         <ImageView
             android:id="@+id/Mas"
@@ -69,7 +71,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="3"
-            app:srcCompat="@drawable/ic_add_black_24dp" />
+            app:srcCompat="@drawable/ic_add_black_24dp"
+            android:contentDescription="@string/todo" />
 
     </LinearLayout>
 
@@ -85,8 +88,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/alegreya_sans_medium"
-            android:text="TextView"
-            android:textSize="19dp" />
+            android:text="@string/textviewExample"
+            android:textSize="19sp" />
 
         <TextView
             android:id="@+id/descriptionArticle"
@@ -94,8 +97,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/alegreya_sans_medium"
-            android:text="TextView"
-            android:textSize="19dp" />
+            android:text="@string/textviewExample"
+            android:textSize="19sp" />
 
         <TextView
             android:id="@+id/stockArticle"
@@ -103,8 +106,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/alegreya_sans_medium"
-            android:text="TextView"
-            android:textSize="19dp" />
+            android:text="@string/textviewExample"
+            android:textSize="19sp" />
 
         <TextView
             android:id="@+id/priceArticle"
@@ -112,8 +115,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/alegreya_sans_medium"
-            android:text="TextView"
-            android:textSize="19dp" />
+            android:text="@string/textviewExample"
+            android:textSize="19sp" />
 
         <TextView
             android:id="@+id/priceWithIVA"
@@ -121,16 +124,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/alegreya_sans_medium"
-            android:text="TextView"
-            android:textSize="19dp" />
+            android:text="@string/textviewExample"
+            android:textSize="19sp" />
 
         <ImageView
             android:id="@+id/Storie"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_margin="10dp"
             android:layout_weight="1"
-            app:srcCompat="@drawable/ic_history_black_24dp" />
+            app:srcCompat="@drawable/ic_history_black_24dp"
+            android:contentDescription="@string/todo"
+            tools:ignore="NestedWeights" />
 
 
     </LinearLayout>
@@ -147,14 +152,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="19dp" />
+            android:textSize="19sp"
+            tools:ignore="NestedWeights" />
 
         <ImageView
             android:id="@+id/deleteMain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@drawable/ic_delete_black_24dp" />
+            app:srcCompat="@drawable/ic_delete_black_24dp"
+            android:contentDescription="@string/todo" />
 
         <TextView
             android:id="@+id/textView6"
@@ -162,7 +169,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="19dp" />
+            android:textSize="19sp" />
 
         <ImageView
             android:id="@+id/Menos"
@@ -170,7 +177,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="0.5"
-            app:srcCompat="@drawable/ic_remove_black_24dp" />
+            app:srcCompat="@drawable/ic_remove_black_24dp"
+            android:contentDescription="@string/todo" />
 
     </LinearLayout>
 

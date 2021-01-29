@@ -61,9 +61,6 @@ interface ArticleDAO {
     @Update
     fun update(Article: Article)
 
-    @Update
-    fun updateMovement(Movement: Movement)
-
     @Insert
     fun insertMovement(vararg Movement: Movement)
 

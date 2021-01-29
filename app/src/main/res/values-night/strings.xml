@@ -20,7 +20,6 @@
     <string name="save">Guardar</string>
     <string name="todo">TODO</string>
     <string name="code">Codigo:</string>
-    <string name="quantity">Cantidad:</string>
     <string name="date">Fecha:</string>
     <string name="dateExample">2000/29/10</string>
     <string name="textviewExample">TextView</string>

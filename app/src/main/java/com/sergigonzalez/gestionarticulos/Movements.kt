@@ -1,14 +1,11 @@
 package com.sergigonzalez.gestionarticulos
 
-import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.sergigonzalez.gestionarticulos.adapters.MovementsAdapter
 import com.sergigonzalez.gestionarticulos.data.ArticleApp
 import com.sergigonzalez.gestionarticulos.data.Movement
 import java.text.ParseException
@@ -20,9 +17,9 @@ class Movements : AppCompatActivity() {
     private lateinit var calendarI : ImageView
     private lateinit var calendarF : ImageView
     private lateinit var idArticle: String
-    private val _adapter: Movements_adapter? = null
     private var listMovements: List<Movement> = emptyList()
-    val database = ArticleApp.getDatabase(this)
+    private val database = ArticleApp.getDatabase(this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movement)
@@ -40,21 +37,21 @@ class Movements : AppCompatActivity() {
 
         calendarI = findViewById(R.id.calendarI)
         calendarI.setOnClickListener{
-            DialogCalendar.Dialog(this@Movements, dateI)
+            DialogCalendar.dialog(this@Movements, dateI)
         }
 
         calendarF = findViewById(R.id.calendarF)
         calendarF.setOnClickListener{
-            DialogCalendar.Dialog(this@Movements, dateF)
+            DialogCalendar.dialog(this@Movements, dateF)
         }
 
         val btnC = findViewById<View>(R.id.ButtonClean) as FloatingActionButton
-        btnC.setOnClickListener { Reset() }
+        btnC.setOnClickListener { reset() }
 
         val btn = findViewById<View>(R.id.buttonSearch) as FloatingActionButton
         btn.setOnClickListener {
             try {
-                Search()
+                search()
             } catch (e: ParseException) {
                 e.printStackTrace()
             }
@@ -62,24 +59,24 @@ class Movements : AppCompatActivity() {
 
     }
 
-    fun Search(){
-        val _dayI: String
-        val _dayF: String
+    private fun search(){
+        val dayI: String
+        val dayF: String
 
         if(dateI.text.toString().isNotEmpty() && dateF.text.toString().isNotEmpty()) {
-            _dayI = DialogCalendar.ChangeFormatDate(
+            dayI = DialogCalendar.changeFormatDate(
                     dateI.text.toString(),
                     "dd/MM/yyyy",
                     "yyyy/MM/dd"
             )
-            _dayF = DialogCalendar.ChangeFormatDate(
+            dayF = DialogCalendar.changeFormatDate(
                     dateF.text.toString(),
                     "dd/MM/yyyy",
                     "yyyy/MM/dd"
             )
-            database.Articles().dateIDateF(idArticle,_dayF, _dayI).observe(this, Observer {
+            database.Articles().dateIDateF(idArticle,dayF, dayI).observe(this, {
                 listMovements = it
-                val adapter = Movements_adapter(this, listMovements)
+                val adapter = MovementsAdapter(this, listMovements)
 
                 _list!!.adapter = adapter
 
@@ -87,14 +84,14 @@ class Movements : AppCompatActivity() {
             _list?.visibility = View.VISIBLE
 
         } else if(dateI.text.toString().isNotEmpty()) {
-            _dayI = DialogCalendar.ChangeFormatDate(
+            dayI = DialogCalendar.changeFormatDate(
                     dateI.text.toString(),
                     "dd/MM/yyyy",
                     "yyyy/MM/dd"
             )
-            database.Articles().dateI(idArticle, _dayI).observe(this, Observer {
+            database.Articles().dateI(idArticle, dayI).observe(this, {
                 listMovements = it
-                val adapter = Movements_adapter(this, listMovements)
+                val adapter = MovementsAdapter(this, listMovements)
 
                 _list!!.adapter = adapter
 
@@ -102,23 +99,23 @@ class Movements : AppCompatActivity() {
             _list?.visibility = View.VISIBLE
 
         } else if(dateF.text.toString().isNotEmpty()) {
-            _dayF = DialogCalendar.ChangeFormatDate(
+            dayF = DialogCalendar.changeFormatDate(
                     dateF.text.toString(),
                     "dd/MM/yyyy",
                     "yyyy/MM/dd"
             )
-            database.Articles().dateF(idArticle, _dayF).observe(this, Observer {
+            database.Articles().dateF(idArticle, dayF).observe(this, {
                 listMovements = it
-                val adapter = Movements_adapter(this, listMovements)
+                val adapter = MovementsAdapter(this, listMovements)
 
                 _list!!.adapter = adapter
 
             })
             _list?.visibility = View.VISIBLE
         } else {
-            database.Articles().getAllMovements().observe(this, Observer {
+            database.Articles().getAllMovements().observe(this, {
                 listMovements = it
-                val adapter = Movements_adapter(this, listMovements)
+                val adapter = MovementsAdapter(this, listMovements)
 
                 _list!!.adapter = adapter
 
@@ -127,7 +124,7 @@ class Movements : AppCompatActivity() {
         }
     }
 
-    fun Reset(){
+    private fun reset(){
         dateI.setText("")
         dateF.setText("")
         _list?.visibility = View.GONE
@@ -136,41 +133,5 @@ class Movements : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
-    }
-}
-
-class Movements_adapter(private val mContext: Context, private val listMovements: List<Movement>) : ArrayAdapter<Movement>(
-        mContext,
-        0,
-        listMovements
-) {
-
-    private lateinit var database: ArticleApp
-
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val layout = LayoutInflater.from(mContext).inflate(
-                R.layout.elements_movement,
-                parent,
-                false
-        )
-        val day = layout.findViewById<TextView>(R.id.tvDate)
-        database = ArticleApp.getDatabase(mContext)
-        val movement = listMovements[position]
-
-        val quantity = layout.findViewById<TextView>(R.id.tvCan)
-
-        val type = layout.findViewById<TextView>(R.id.tvType)
-
-        quantity.text = movement.quantity.toString()
-
-        type.text = movement.type.toString()
-
-        try {
-            day.text = DialogCalendar.ChangeFormatDate(movement.day, "yyyy/MM/dd", "dd/MM/yyyy")
-        } catch (e: ParseException) {
-            e.printStackTrace()
-        }
-
-        return layout
     }
 }
