@@ -26,7 +26,9 @@ class Movements : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+
         idArticle = intent.getStringExtra("idArticle").toString()
+
 
 
         _list = findViewById(R.id.listMovement)

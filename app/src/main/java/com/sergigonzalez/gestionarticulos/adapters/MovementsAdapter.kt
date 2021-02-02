@@ -40,9 +40,9 @@ class MovementsAdapter(private val mContext: Context, private val listMovements:
         quantity.text = movement.quantity.toString()
 
         if(movement.type.toString() == "E") {
-            type.text = R.string.Entrada.toString()
+            type.text = "Entrada"
         } else {
-            type.text = R.string.Salida.toString()
+            type.text = "Salida"
         }
 
 
