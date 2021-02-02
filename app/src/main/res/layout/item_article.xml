@@ -71,8 +71,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="3"
-            app:srcCompat="@drawable/ic_add_black_24dp"
-            android:contentDescription="@string/todo" />
+            android:contentDescription="@string/todo"
+            app:srcCompat="@drawable/ic_add_black_24dp" />
 
     </LinearLayout>
 
@@ -132,9 +132,9 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="10dp"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/ic_history_black_24dp"
+            android:layout_weight="0.5"
             android:contentDescription="@string/todo"
+            app:srcCompat="@drawable/ic_history_black_24dp"
             tools:ignore="NestedWeights" />
 
 
@@ -176,9 +176,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:layout_weight="0.5"
-            app:srcCompat="@drawable/ic_remove_black_24dp"
-            android:contentDescription="@string/todo" />
+            android:layout_weight="0.2"
+            android:contentDescription="@string/todo"
+            app:srcCompat="@drawable/ic_remove_black_24dp" />
 
     </LinearLayout>
 

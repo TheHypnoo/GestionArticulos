@@ -160,6 +160,9 @@ class ArticleAdapter(private val mContext: Context, private val listArticle: Lis
         var tv = dialogView!!.findViewById<TextView>(R.id.tvCodeMovement)
         tv.text = tv.text.toString() + " " + article.idArticle
 
+        val description = dialogView.findViewById<TextView>(R.id.tvDescriptionMovement)
+        description.text = description.text.toString() + " " + article.descriptionArticle
+
         val stock = dialogView.findViewById<EditText>(R.id.cantidad)
 
         tv = dialogView.findViewById<View>(R.id.calendar) as TextView

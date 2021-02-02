@@ -25,6 +25,8 @@
     <string name="dateExample">2000/29/10</string>
     <string name="textviewExample">TextView</string>
     <string name="MoneyWithIVA">Precio con IVA:</string>
+    <string name="Entrada">Entrada:</string>
+    <string name="Salida">Salida:</string>
 
     <string-array name="family">
         <item> </item>

@@ -32,13 +32,19 @@ class MovementsAdapter(private val mContext: Context, private val listMovements:
         database = ArticleApp.getDatabase(mContext)
         val movement = listMovements[position]
 
+
         val quantity = layout.findViewById<TextView>(R.id.tvCan)
 
         val type = layout.findViewById<TextView>(R.id.tvType)
 
         quantity.text = movement.quantity.toString()
 
-        type.text = movement.type.toString()
+        if(movement.type.toString() == "E") {
+            type.text = R.string.Entrada.toString()
+        } else {
+            type.text = R.string.Salida.toString()
+        }
+
 
         try {
             day.text = DialogCalendar.changeFormatDate(movement.day, "yyyy/MM/dd", "dd/MM/yyyy")
