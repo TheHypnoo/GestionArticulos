@@ -10,7 +10,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.sergigonzalez.gestionarticulos.adapters.ArticleAdapter
 import com.sergigonzalez.gestionarticulos.data.Article
 import com.sergigonzalez.gestionarticulos.data.ArticleApp
-import com.sergigonzalez.gestionarticulos.weather.Weather
 
 class MainActivity : AppCompatActivity() {
 
@@ -125,7 +124,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this, MovementsAll::class.java))
             }
             R.id.Weather -> {
-                startActivity(Intent(this,Weather::class.java))
+                startActivity(Intent(this, WeatherActivity::class.java))
             }
         }
 

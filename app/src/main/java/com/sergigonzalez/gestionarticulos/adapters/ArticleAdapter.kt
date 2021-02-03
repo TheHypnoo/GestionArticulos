@@ -10,7 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.sergigonzalez.gestionarticulos.DialogCalendar
+import com.sergigonzalez.gestionarticulos.`object`.DialogCalendar
 import com.sergigonzalez.gestionarticulos.MainActivity
 import com.sergigonzalez.gestionarticulos.Movements
 import com.sergigonzalez.gestionarticulos.R
