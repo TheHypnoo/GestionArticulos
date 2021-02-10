@@ -123,7 +123,12 @@ class MainActivity : AppCompatActivity() {
             R.id.Movements -> {
                 startActivity(Intent(this, MovementsAll::class.java))
             }
+            R.id.Weather -> {
+                startActivity(Intent(this, WeatherActivity::class.java))
+            }
         }
+
+
 
         return super.onOptionsItemSelected(item)
     }

@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import com.sergigonzalez.gestionarticulos.DialogCalendar
+import com.sergigonzalez.gestionarticulos.`object`.DialogCalendar
 import com.sergigonzalez.gestionarticulos.R
 import com.sergigonzalez.gestionarticulos.data.ArticleApp
 import com.sergigonzalez.gestionarticulos.data.Movement
@@ -44,7 +44,11 @@ class MovementsAllAdapter(private val mContext: Context, private val listMovemen
 
         quantity.text = movement.quantity.toString()
 
-        type.text = movement.type.toString()
+        if(movement.type.toString() == "E") {
+            type.text = "Entrada"
+        } else {
+            type.text = "Salida"
+        }
 
         try {
             day.text = DialogCalendar.changeFormatDate(movement.day, "yyyy/MM/dd", "dd/MM/yyyy")

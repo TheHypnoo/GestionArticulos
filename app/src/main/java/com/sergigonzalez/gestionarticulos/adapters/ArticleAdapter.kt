@@ -10,7 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.sergigonzalez.gestionarticulos.DialogCalendar
+import com.sergigonzalez.gestionarticulos.`object`.DialogCalendar
 import com.sergigonzalez.gestionarticulos.MainActivity
 import com.sergigonzalez.gestionarticulos.Movements
 import com.sergigonzalez.gestionarticulos.R
@@ -159,6 +159,9 @@ class ArticleAdapter(private val mContext: Context, private val listArticle: Lis
 
         var tv = dialogView!!.findViewById<TextView>(R.id.tvCodeMovement)
         tv.text = tv.text.toString() + " " + article.idArticle
+
+        val description = dialogView.findViewById<TextView>(R.id.tvDescriptionMovement)
+        description.text = description.text.toString() + " " + article.descriptionArticle
 
         val stock = dialogView.findViewById<EditText>(R.id.cantidad)
 

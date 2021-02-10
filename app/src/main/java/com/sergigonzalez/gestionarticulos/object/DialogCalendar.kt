@@ -1,4 +1,4 @@
-package com.sergigonzalez.gestionarticulos
+package com.sergigonzalez.gestionarticulos.`object`
 
 import android.app.DatePickerDialog
 import android.content.Context

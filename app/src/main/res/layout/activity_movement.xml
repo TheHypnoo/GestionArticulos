@@ -51,6 +51,7 @@
                 android:ems="10"
                 android:inputType="date"
                 android:autofillHints=""
+                android:enabled="false"
                 tools:ignore="LabelFor" />
 
             <ImageView
@@ -69,6 +70,7 @@
                 android:ems="10"
                 android:inputType="date"
                 android:autofillHints=""
+                android:enabled="false"
                 tools:ignore="LabelFor" />
 
             <ImageView
