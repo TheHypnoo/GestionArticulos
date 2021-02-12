@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sergigonzalez.gestionarticulos.adapters.ArticleAdapter
+import com.sergigonzalez.gestionarticulos.adapters.MovementsAdapter
 import com.sergigonzalez.gestionarticulos.data.Article
 import com.sergigonzalez.gestionarticulos.data.ArticleApp
 import com.sergigonzalez.gestionarticulos.databinding.ActivityMainBinding

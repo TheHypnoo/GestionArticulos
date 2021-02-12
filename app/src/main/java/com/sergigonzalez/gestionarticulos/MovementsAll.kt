@@ -4,17 +4,22 @@ import android.os.Bundle
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.sergigonzalez.gestionarticulos.`object`.DialogCalendar
+import com.sergigonzalez.gestionarticulos.adapters.ArticleAdapter
+import com.sergigonzalez.gestionarticulos.adapters.MovementsAdapter
 import com.sergigonzalez.gestionarticulos.adapters.MovementsAllAdapter
 import com.sergigonzalez.gestionarticulos.data.ArticleApp
 import com.sergigonzalez.gestionarticulos.data.Movement
 import java.text.ParseException
 
 class MovementsAll : AppCompatActivity() {
-    private var _list: ListView? = null
-    private lateinit var edt : EditText
-    private lateinit var _calendar : ImageView
+    private var _list: RecyclerView? = null
+    private lateinit var edt: EditText
+    private lateinit var _calendar: ImageView
     private var listMovements: List<Movement> = emptyList()
     private val database = ArticleApp.getDatabase(this)
 
@@ -28,7 +33,7 @@ class MovementsAll : AppCompatActivity() {
         _list = findViewById(R.id.list_movement_all)
 
         _calendar = findViewById(R.id.calendarM)
-        _calendar.setOnClickListener{
+        _calendar.setOnClickListener {
             DialogCalendar.dialog(this@MovementsAll, edt)
         }
 
@@ -46,29 +51,40 @@ class MovementsAll : AppCompatActivity() {
 
     }
 
-    private fun resetMovements(){
+    private fun resetMovements() {
         edt.setText("")
         _list?.visibility = View.GONE
     }
 
-    private fun searchMovement(){
+    private fun searchMovement() {
         if (edt.text.toString().isNotEmpty()) {
-            val date = DialogCalendar.changeFormatDate(edt.text.toString(), "dd/MM/yyyy", "yyyy/MM/dd")
+            val date =
+                DialogCalendar.changeFormatDate(edt.text.toString(), "dd/MM/yyyy", "yyyy/MM/dd")
+
             database.Articles().dateMovements(date).observe(this, {
                 listMovements = it
-                val adapter = MovementsAllAdapter(this, listMovements)
-
-                _list!!.adapter = adapter
+                val adapter = MovementsAllAdapter(listMovements)
+                _list?.layoutManager = LinearLayoutManager(this)
+                _list?.addItemDecoration(
+                    DividerItemDecoration(
+                        this,
+                        DividerItemDecoration.VERTICAL
+                    ))
+                _list?.adapter = adapter
 
             })
             _list?.visibility = View.VISIBLE
         } else {
             database.Articles().dateMovementsAll().observe(this, {
                 listMovements = it
-                val adapter = MovementsAllAdapter(this, listMovements)
-
-                _list!!.adapter = adapter
-
+                val adapter = MovementsAllAdapter(listMovements)
+                _list?.layoutManager = LinearLayoutManager(this)
+                _list?.addItemDecoration(
+                    DividerItemDecoration(
+                        this,
+                        DividerItemDecoration.VERTICAL
+                    ))
+                _list?.adapter = adapter
             })
             _list?.visibility = View.VISIBLE
         }
