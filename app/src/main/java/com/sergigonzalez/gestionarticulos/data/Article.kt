@@ -12,15 +12,15 @@ import java.io.Serializable
 class Article(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_id")
-    var _id: Int,
+    var _id: Int = 0,
     @ColumnInfo(name = "idArticle")
-    var idArticle: String,
+    var idArticle: String = "idArticle",
     @ColumnInfo(name = "descriptionArticle")
-    var descriptionArticle: String,
+    var descriptionArticle: String = "description",
     @ColumnInfo(name = "familyArticle")
-    var familyArticle: String,
+    var familyArticle: String = "family",
     @ColumnInfo(name = "priceArticle")
-    var priceArticle: Double,
+    var priceArticle: Double = 1.0,
     @ColumnInfo(name = "stockArticle")
-    var stockArticle: Int
+    var stockArticle: Int = 1
 ) : Serializable

@@ -13,12 +13,12 @@ import java.sql.Date
 class Movement (
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_id")
-    var _id: Int,
-    var idArticleMovement: String,
+    var _id: Int = 0,
+    var idArticleMovement: String = "idArticleMovement",
     @ColumnInfo(name = "day")
-    val day: String,
+    val day: String = "01/01/2000",
     @ColumnInfo(name = "quantity")
-    val quantity: Int,
+    val quantity: Int = 1,
     @ColumnInfo(name = "type")
-    val type: Char,
+    val type: Char = 'E',
 ) : Serializable

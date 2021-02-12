@@ -4,52 +4,64 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.sergigonzalez.gestionarticulos.adapters.ArticleAdapter
 import com.sergigonzalez.gestionarticulos.data.Article
 import com.sergigonzalez.gestionarticulos.data.ArticleApp
+import com.sergigonzalez.gestionarticulos.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var lista: ListView
-    private lateinit var addArticle: FloatingActionButton
+    private lateinit var binding: ActivityMainBinding
     private lateinit var database: ArticleApp
     private var listArticles: List<Article> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        lista = findViewById(R.id.lista)
-        addArticle = findViewById(R.id.addArticle)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         database = ArticleApp.getDatabase(this)
 
+        binding.addArticle.setOnClickListener {
+            val intent = Intent(this, NewArticle::class.java)
+            startActivity(intent)
+        }
         database.Articles().getAll().observe(this, {
             listArticles = it
+            binding.lista.layoutManager = LinearLayoutManager(this)
+            binding.lista.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+            //1
+            val itemTouchCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+                override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, viewHolder1: RecyclerView.ViewHolder): Boolean {
+                    //2
+                    return false
+                }
 
-            val adapter = ArticleAdapter(this, listArticles)
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
+                    //3
+                    val position = viewHolder.adapterPosition
+                    ArticleAdapter.ArticleHolder.deleteArticle(listArticles[position],binding.root,database)
+                    binding.lista.adapter!!.notifyItemRemoved(position)
+                }
+            }
 
-            lista.adapter = adapter
+            //4
+            val itemTouchHelper = ItemTouchHelper(itemTouchCallback)
+            itemTouchHelper.attachToRecyclerView(binding.lista)
+
+            val adapter = ArticleAdapter(listArticles)
+
+            binding.lista.adapter = adapter
 
         })
-
-        lista.setOnItemClickListener { _, _, position, _ ->
-            val intent = Intent(this, NewArticle::class.java)
-            intent.putExtra("Article", listArticles[position])
-            intent.putExtra("Edit", true)
-            startActivity(intent)
-        }
-
-        addArticle.setOnClickListener {
-            val intent = Intent(this, NewArticle::class.java)
-            startActivity(intent)
-        }
 
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        // Inflated the menu to filter
         val inflater = menuInflater
         inflater.inflate(R.menu.menu_main, menu)
         return super.onCreateOptionsMenu(menu)
@@ -57,13 +69,22 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+
             //All filters
             R.id.AllArticles -> {
                 database.Articles().getAll().observe(this, {
                     listArticles = it
-                    val adapter = ArticleAdapter(this, listArticles)
+                    binding.lista.layoutManager = LinearLayoutManager(this)
+                    binding.lista.addItemDecoration(
+                        DividerItemDecoration(
+                            this,
+                            DividerItemDecoration.VERTICAL
+                        )
+                    )
 
-                    lista.adapter = adapter
+                    val adapter = ArticleAdapter(listArticles)
+
+                    binding.lista.adapter = adapter
 
                 })
             }
@@ -71,9 +92,17 @@ class MainActivity : AppCompatActivity() {
             R.id.ArticlesWithDescription -> {
                 database.Articles().getDescription().observe(this, {
                     listArticles = it
-                    val adapter = ArticleAdapter(this, listArticles)
+                    binding.lista.layoutManager = LinearLayoutManager(this)
+                    binding.lista.addItemDecoration(
+                        DividerItemDecoration(
+                            this,
+                            DividerItemDecoration.VERTICAL
+                        )
+                    )
 
-                    lista.adapter = adapter
+                    val adapter = ArticleAdapter(listArticles)
+
+                    binding.lista.adapter = adapter
 
                 })
             }
@@ -81,10 +110,17 @@ class MainActivity : AppCompatActivity() {
             R.id.NoHaveStock -> {
                 database.Articles().getWithoutStock().observe(this, {
                     listArticles = it
-                    val adapter = ArticleAdapter(this, listArticles)
+                    binding.lista.layoutManager = LinearLayoutManager(this)
+                    binding.lista.addItemDecoration(
+                        DividerItemDecoration(
+                            this,
+                            DividerItemDecoration.VERTICAL
+                        )
+                    )
 
-                    lista.adapter = adapter
+                    val adapter = ArticleAdapter(listArticles)
 
+                    binding.lista.adapter = adapter
                 })
 
             }
@@ -92,9 +128,17 @@ class MainActivity : AppCompatActivity() {
             R.id.HaveStock -> {
                 database.Articles().getWithStock().observe(this, {
                     listArticles = it
-                    val adapter = ArticleAdapter(this, listArticles)
+                    binding.lista.layoutManager = LinearLayoutManager(this)
+                    binding.lista.addItemDecoration(
+                        DividerItemDecoration(
+                            this,
+                            DividerItemDecoration.VERTICAL
+                        )
+                    )
 
-                    lista.adapter = adapter
+                    val adapter = ArticleAdapter(listArticles)
+
+                    binding.lista.adapter = adapter
 
                 })
             }
@@ -102,9 +146,17 @@ class MainActivity : AppCompatActivity() {
             R.id.Ascendent -> {
                 database.Articles().getAllAsc().observe(this, {
                     listArticles = it
-                    val adapter = ArticleAdapter(this, listArticles)
+                    binding.lista.layoutManager = LinearLayoutManager(this)
+                    binding.lista.addItemDecoration(
+                        DividerItemDecoration(
+                            this,
+                            DividerItemDecoration.VERTICAL
+                        )
+                    )
 
-                    lista.adapter = adapter
+                    val adapter = ArticleAdapter(listArticles)
+
+                    binding.lista.adapter = adapter
 
                 })
             }
@@ -112,9 +164,17 @@ class MainActivity : AppCompatActivity() {
             R.id.Descendent -> {
                 database.Articles().getAllDesc().observe(this, {
                     listArticles = it
-                    val adapter = ArticleAdapter(this, listArticles)
+                    binding.lista.layoutManager = LinearLayoutManager(this)
+                    binding.lista.addItemDecoration(
+                        DividerItemDecoration(
+                            this,
+                            DividerItemDecoration.VERTICAL
+                        )
+                    )
 
-                    lista.adapter = adapter
+                    val adapter = ArticleAdapter(listArticles)
+
+                    binding.lista.adapter = adapter
 
                 })
             }
@@ -123,6 +183,7 @@ class MainActivity : AppCompatActivity() {
             R.id.Movements -> {
                 startActivity(Intent(this, MovementsAll::class.java))
             }
+            //Intent Weather
             R.id.Weather -> {
                 startActivity(Intent(this, WeatherActivity::class.java))
             }
@@ -132,4 +193,6 @@ class MainActivity : AppCompatActivity() {
 
         return super.onOptionsItemSelected(item)
     }
+
+
 }
