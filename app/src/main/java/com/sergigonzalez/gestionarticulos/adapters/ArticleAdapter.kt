@@ -186,7 +186,7 @@ class ArticleAdapter(private val listArticle : List<Article>) : RecyclerView.Ada
                         }
 
                         val movement = Movement(
-                            99,
+                            0,
                             article.idArticle,
                             dates.toString(),
                             stock.text.toString().toInt(),

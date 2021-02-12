@@ -3,6 +3,8 @@ package com.sergigonzalez.gestionarticulos
 import android.content.Context
 import android.database.sqlite.SQLiteConstraintException
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -23,6 +25,7 @@ class NewArticle : AppCompatActivity() {
     private lateinit var stock_et: EditText
     private lateinit var save_btn: Button
     private var family: String = " "
+    private var _id: Int = 0
     private var Edit: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,14 +65,19 @@ class NewArticle : AppCompatActivity() {
                 id: Long
             ) {
                 val selectedItem = parent?.getItemAtPosition(position).toString()
-                if (selectedItem.equals("Hardware")) {
-                    family = "Hardware"
-                } else if (selectedItem.equals("Software")) {
-                    family = "Software"
-                } else if (selectedItem.equals("Altres")) {
-                    family = "Altres"
-                } else {
-                    family = " "
+                family = when {
+                    selectedItem.equals("Hardware") -> {
+                        "Hardware"
+                    }
+                    selectedItem.equals("Software") -> {
+                        "Software"
+                    }
+                    selectedItem.equals("Altres") -> {
+                        "Altres"
+                    }
+                    else -> {
+                        " "
+                    }
                 }
             }
         }
@@ -83,20 +91,25 @@ class NewArticle : AppCompatActivity() {
         }
         if (intent.hasExtra("Article")) {
             val article = intent.extras?.getSerializable("Article") as Article
-
+            _id = article._id
             id_et.setText(article.idArticle)
             descripcion_et.setText(article.descriptionArticle)
             precio_et.setText(article.priceArticle.toString())
             stock_et.setText(article.stockArticle.toString())
             family = article.familyArticle
-            if (article.familyArticle.equals(" ")) {
-                familySpinner.setSelection(0)
-            } else if (article.familyArticle.equals("Hardware")) {
-                familySpinner.setSelection(1)
-            } else if (article.familyArticle.equals("Software")) {
-                familySpinner.setSelection(2)
-            } else if (article.familyArticle.equals("Altres")) {
-                familySpinner.setSelection(3)
+            when (article.familyArticle) {
+                " " -> {
+                    familySpinner.setSelection(0)
+                }
+                "Hardware" -> {
+                    familySpinner.setSelection(1)
+                }
+                "Software" -> {
+                    familySpinner.setSelection(2)
+                }
+                "Altres" -> {
+                    familySpinner.setSelection(3)
+                }
             }
             idArticle = article.idArticle
         }
@@ -167,17 +180,7 @@ class NewArticle : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            if (precio < 0) {
-                if (view != null) {
-                    val imm: InputMethodManager =
-                        getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(view.windowToken, 0)
-                }
-                snackbarMessage("El precio ha de ser un numero superior o igual a 0")
-                return@setOnClickListener
-            }
-
-            val article = Article(-99, id, descripcion, family, precio, stock)
+            val article = Article(_id, id, descripcion, family, precio, stock)
 
             if (idArticle != null) {
 
@@ -191,9 +194,14 @@ class NewArticle : AppCompatActivity() {
                             getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                         imm.hideSoftInputFromWindow(view.windowToken, 0)
                     }
-                    snackbarMessage("Has creado el Articulo correctamente")
-
-                    this@NewArticle.finish()
+                    if (Edit) {
+                        snackbarMessage("Has modificado el articulo correctamente")
+                    } else {
+                        snackbarMessage("Has creado el Articulo correctamente")
+                    }
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        this@NewArticle.finish()
+                    }, 500)
                 }
             } else {
 
