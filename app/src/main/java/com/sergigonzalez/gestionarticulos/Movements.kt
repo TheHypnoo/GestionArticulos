@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.sergigonzalez.gestionarticulos.`object`.DialogCalendar
 import com.sergigonzalez.gestionarticulos.adapters.MovementsAdapter
@@ -12,7 +15,7 @@ import com.sergigonzalez.gestionarticulos.data.Movement
 import java.text.ParseException
 
 class Movements : AppCompatActivity() {
-    private var _list: ListView? = null
+    private var _list: RecyclerView? = null
     private lateinit var dateI : EditText
     private lateinit var dateF : EditText
     private lateinit var calendarI : ImageView
@@ -77,12 +80,18 @@ class Movements : AppCompatActivity() {
                     "dd/MM/yyyy",
                     "yyyy/MM/dd"
             )
+
+
             database.Articles().dateIDateF(idArticle,dayF, dayI).observe(this, {
                 listMovements = it
-                val adapter = MovementsAdapter(this, listMovements)
-
-                _list!!.adapter = adapter
-
+                val adapter = MovementsAdapter(listMovements)
+                _list?.layoutManager = LinearLayoutManager(this)
+                _list?.addItemDecoration(
+                    DividerItemDecoration(
+                        this,
+                        DividerItemDecoration.VERTICAL
+                    ))
+                _list?.adapter = adapter
             })
             _list?.visibility = View.VISIBLE
 
@@ -94,10 +103,14 @@ class Movements : AppCompatActivity() {
             )
             database.Articles().dateI(idArticle, dayI).observe(this, {
                 listMovements = it
-                val adapter = MovementsAdapter(this, listMovements)
-
-                _list!!.adapter = adapter
-
+                val adapter = MovementsAdapter(listMovements)
+                _list?.layoutManager = LinearLayoutManager(this)
+                _list?.addItemDecoration(
+                    DividerItemDecoration(
+                        this,
+                        DividerItemDecoration.VERTICAL
+                    ))
+                _list?.adapter = adapter
             })
             _list?.visibility = View.VISIBLE
 
@@ -109,18 +122,27 @@ class Movements : AppCompatActivity() {
             )
             database.Articles().dateF(idArticle, dayF).observe(this, {
                 listMovements = it
-                val adapter = MovementsAdapter(this, listMovements)
-
-                _list!!.adapter = adapter
-
+                val adapter = MovementsAdapter(listMovements)
+                _list?.layoutManager = LinearLayoutManager(this)
+                _list?.addItemDecoration(
+                    DividerItemDecoration(
+                        this,
+                        DividerItemDecoration.VERTICAL
+                    ))
+                _list?.adapter = adapter
             })
             _list?.visibility = View.VISIBLE
         } else {
             database.Articles().getAllMovements().observe(this, {
                 listMovements = it
-                val adapter = MovementsAdapter(this, listMovements)
-
-                _list!!.adapter = adapter
+                val adapter = MovementsAdapter(listMovements)
+                _list?.layoutManager = LinearLayoutManager(this)
+                _list?.addItemDecoration(
+                    DividerItemDecoration(
+                        this,
+                        DividerItemDecoration.VERTICAL
+                    ))
+                _list?.adapter = adapter
 
             })
             _list?.visibility = View.VISIBLE
