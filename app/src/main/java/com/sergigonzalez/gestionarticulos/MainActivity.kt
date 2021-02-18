@@ -4,13 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sergigonzalez.gestionarticulos.adapters.ArticleAdapter
-import com.sergigonzalez.gestionarticulos.adapters.MovementsAdapter
 import com.sergigonzalez.gestionarticulos.data.Article
 import com.sergigonzalez.gestionarticulos.data.ArticleApp
 import com.sergigonzalez.gestionarticulos.databinding.ActivityMainBinding
@@ -34,10 +34,20 @@ class MainActivity : AppCompatActivity() {
         database.Articles().getAll().observe(this, {
             listArticles = it
             binding.lista.layoutManager = LinearLayoutManager(this)
-            binding.lista.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+            binding.lista.addItemDecoration(
+                DividerItemDecoration(
+                    this,
+                    DividerItemDecoration.VERTICAL
+                )
+            )
             //1
-            val itemTouchCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-                override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, viewHolder1: RecyclerView.ViewHolder): Boolean {
+            val itemTouchCallback = object :
+                ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    viewHolder1: RecyclerView.ViewHolder
+                ): Boolean {
                     //2
                     return false
                 }
@@ -45,7 +55,11 @@ class MainActivity : AppCompatActivity() {
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
                     //3
                     val position = viewHolder.adapterPosition
-                    ArticleAdapter.ArticleHolder.deleteArticle(listArticles[position],binding.root,database)
+                    ArticleAdapter.ArticleHolder.deleteArticle(
+                        listArticles[position],
+                        binding.root,
+                        database
+                    )
                     binding.lista.adapter!!.notifyItemRemoved(position)
                 }
             }
@@ -57,7 +71,13 @@ class MainActivity : AppCompatActivity() {
             val adapter = ArticleAdapter(listArticles)
 
             binding.lista.adapter = adapter
-
+            if (listArticles.isEmpty()) {
+                binding.emptyView.visibility = View.VISIBLE
+                binding.lista.visibility = View.GONE
+            } else {
+                binding.emptyView.visibility = View.GONE
+                binding.lista.visibility = View.VISIBLE
+            }
         })
 
     }
@@ -86,6 +106,13 @@ class MainActivity : AppCompatActivity() {
                     val adapter = ArticleAdapter(listArticles)
 
                     binding.lista.adapter = adapter
+                    if (listArticles.isEmpty()) {
+                        binding.emptyView.visibility = View.VISIBLE
+                        binding.lista.visibility = View.GONE
+                    } else {
+                        binding.emptyView.visibility = View.GONE
+                        binding.lista.visibility = View.VISIBLE
+                    }
 
                 })
             }
@@ -104,6 +131,13 @@ class MainActivity : AppCompatActivity() {
                     val adapter = ArticleAdapter(listArticles)
 
                     binding.lista.adapter = adapter
+                    if (listArticles.isEmpty()) {
+                        binding.emptyView.visibility = View.VISIBLE
+                        binding.lista.visibility = View.GONE
+                    } else {
+                        binding.emptyView.visibility = View.GONE
+                        binding.lista.visibility = View.VISIBLE
+                    }
 
                 })
             }
@@ -122,6 +156,14 @@ class MainActivity : AppCompatActivity() {
                     val adapter = ArticleAdapter(listArticles)
 
                     binding.lista.adapter = adapter
+                    if (listArticles.isEmpty()) {
+                        binding.emptyView.visibility = View.VISIBLE
+                        binding.lista.visibility = View.GONE
+                    } else {
+                        binding.emptyView.visibility = View.GONE
+                        binding.lista.visibility = View.VISIBLE
+                    }
+
                 })
 
             }
@@ -140,6 +182,13 @@ class MainActivity : AppCompatActivity() {
                     val adapter = ArticleAdapter(listArticles)
 
                     binding.lista.adapter = adapter
+                    if (listArticles.isEmpty()) {
+                        binding.emptyView.visibility = View.VISIBLE
+                        binding.lista.visibility = View.GONE
+                    } else {
+                        binding.emptyView.visibility = View.GONE
+                        binding.lista.visibility = View.VISIBLE
+                    }
 
                 })
             }
@@ -158,6 +207,13 @@ class MainActivity : AppCompatActivity() {
                     val adapter = ArticleAdapter(listArticles)
 
                     binding.lista.adapter = adapter
+                    if (listArticles.isEmpty()) {
+                        binding.emptyView.visibility = View.VISIBLE
+                        binding.lista.visibility = View.GONE
+                    } else {
+                        binding.emptyView.visibility = View.GONE
+                        binding.lista.visibility = View.VISIBLE
+                    }
 
                 })
             }
@@ -176,6 +232,13 @@ class MainActivity : AppCompatActivity() {
                     val adapter = ArticleAdapter(listArticles)
 
                     binding.lista.adapter = adapter
+                    if (listArticles.isEmpty()) {
+                        binding.emptyView.visibility = View.VISIBLE
+                        binding.lista.visibility = View.GONE
+                    } else {
+                        binding.emptyView.visibility = View.GONE
+                        binding.lista.visibility = View.VISIBLE
+                    }
 
                 })
             }
