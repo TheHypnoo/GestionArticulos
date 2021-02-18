@@ -10,6 +10,9 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.github.matteobattilana.weather.PrecipType
+import com.github.matteobattilana.weather.WeatherData
+import com.github.matteobattilana.weather.WeatherView
 import com.google.android.material.snackbar.Snackbar
 import com.sergigonzalez.gestionarticulos.Interface.HttpService
 import com.sergigonzalez.gestionarticulos.databinding.ActivityWeatherBinding
@@ -36,10 +39,11 @@ class WeatherActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityWeatherBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
         binding.coord.background =
-            ContextCompat.getDrawable(applicationContext, R.drawable.backgroundweather)
+            ContextCompat.getDrawable(applicationContext, R.drawable.gg)
 
         visibility(View.GONE)
         binding.btnWea.setOnClickListener { Search() }
@@ -95,13 +99,21 @@ class WeatherActivity : AppCompatActivity() {
                     binding.tvTempMin.text = "${Convert(cityList.main.tempMin).toInt()} º"
 
                     binding.tvTemp.text = "${Convert(cityList.main.temp).toInt()} º"
+                    binding.tvWeather.text = cityList.weather[0].description
+                    when (cityList.weather[0].description){
+                        "lluvia ligera"->
+                            binding.weatherView.setWeatherData(PrecipType.RAIN)
+                        "nubes"->
+                            binding.weatherView.setWeatherData(PrecipType.CLEAR)
+                        "nieve"->
+                            binding.weatherView.setWeatherData(PrecipType.SNOW)
+                    }
                     binding.tvFeel.text =
                         "Sensacion termica: ${Convert(cityList.main.feelsLike).toInt()} º"
                     binding.tvPres.text = "Presion: ${cityList.main.pressure} mb"
                     binding.tvHum.text = "Humedad: ${cityList.main.humidity}"
                     binding.tvAlgo.text = "Visibilidad: ${cityList.visibility}"
                     binding.tvWind.text = "Vel.Viento ${cityList.wind.speed}"
-                    println(cityList.weather[0].icon)
                     val uri =
                         URL("https://openweathermap.org/img/wn/" + cityList.weather[0].icon + "@2x.png")
                     val bmp = BitmapFactory.decodeStream(uri.openConnection().getInputStream())
@@ -135,6 +147,11 @@ class WeatherActivity : AppCompatActivity() {
 
     fun Convert(x: Double): Double {
         return x - 273.15
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
 }

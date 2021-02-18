@@ -188,6 +188,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/guideline20" />
 
+            <com.github.matteobattilana.weather.WeatherView
+                android:id="@+id/weatherView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
             <TextView
                 android:id="@+id/tvTemp"
                 android:layout_width="0dp"
