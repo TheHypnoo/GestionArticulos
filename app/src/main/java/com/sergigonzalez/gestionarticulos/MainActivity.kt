@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         database = ArticleApp.getDatabase(this)
+        FragmentMenu.newInstance()
 
         binding.addArticle.setOnClickListener {
             val intent = Intent(this, NewArticle::class.java)

@@ -43,7 +43,7 @@ class WeatherActivity : AppCompatActivity() {
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
         binding.coord.background =
-            ContextCompat.getDrawable(applicationContext, R.drawable.gg)
+            ContextCompat.getDrawable(applicationContext, R.drawable.backgroundweather)
 
         visibility(View.GONE)
         binding.btnWea.setOnClickListener { Search() }
@@ -51,6 +51,7 @@ class WeatherActivity : AppCompatActivity() {
     }
 
     fun Search() {
+        var weather: PrecipType
         val Dialog = ProgressDialog(this)
         Dialog.setCancelable(false)
         Dialog.setCanceledOnTouchOutside(false)
@@ -100,13 +101,36 @@ class WeatherActivity : AppCompatActivity() {
 
                     binding.tvTemp.text = "${Convert(cityList.main.temp).toInt()} º"
                     binding.tvWeather.text = cityList.weather[0].description
-                    when (cityList.weather[0].description){
-                        "lluvia ligera"->
-                            binding.weatherView.setWeatherData(PrecipType.RAIN)
-                        "nubes"->
+                    when (cityList.weather[0].description) {
+                        "lluvia ligera" -> {
+                            weather = PrecipType.RAIN
+                            binding.weatherView.apply {
+                                setWeatherData(weather)
+                                speed = 600
+                            }
+                        }
+                        "nubes" ->
                             binding.weatherView.setWeatherData(PrecipType.CLEAR)
-                        "nieve"->
-                            binding.weatherView.setWeatherData(PrecipType.SNOW)
+                        "nieve" -> {
+                            weather = PrecipType.SNOW
+                            binding.weatherView.apply {
+                                setWeatherData(weather)
+                                speed = 100
+                                emissionRate = 5f
+                                angle = 20
+                                fadeOutPercent = .85f
+                            }
+                        }
+                        "nevada intensa" -> {
+                            weather = PrecipType.SNOW
+                            binding.weatherView.apply {
+                                setWeatherData(weather)
+                                speed = 350
+                                emissionRate = 100f
+                                angle = 20
+                                fadeOutPercent = .85f
+                            }
+                        }
                     }
                     binding.tvFeel.text =
                         "Sensacion termica: ${Convert(cityList.main.feelsLike).toInt()} º"
