@@ -6,6 +6,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,13 +22,18 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var database: ArticleApp
     private var listArticles: List<Article> = emptyList()
+    lateinit var fragmentTransaction: FragmentTransaction
+    private var fragment : FragmentMenu = FragmentMenu()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         database = ArticleApp.getDatabase(this)
-        FragmentMenu.newInstance()
+        fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.FragmentMenu,fragment)
+        fragmentTransaction.commit()
 
         binding.addArticle.setOnClickListener {
             val intent = Intent(this, NewArticle::class.java)
