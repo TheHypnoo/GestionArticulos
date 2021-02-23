@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
@@ -13,6 +14,7 @@ class FragmentMenu : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
     }
 
     override fun onCreateView(
@@ -21,27 +23,49 @@ class FragmentMenu : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_menu, container, false)
-        val boton = view.findViewById<FloatingActionButton>(R.id.floatBoton)
-        boton.setOnClickListener{
-            _main = view.context as MainActivity?
+        //NavigationView
+        val navigationView = view.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        navigationView.background = null
+        navigationView.menu.getItem(2).isEnabled = false
+        //Main
+        _main = view.context as MainActivity?
+        navigationView.selectedItemId = R.id.miHome
+        navigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.miHome -> {
+                    if(!item.isChecked) {
+                        val intent = Intent(_main, MainActivity::class.java)
+                        startActivity(intent)
+                    }
+                        return@setOnNavigationItemSelectedListener true
+
+                }
+                R.id.miMovements -> {
+                    if(!item.isChecked) {
+                        val intent = Intent(_main, MovementsAll::class.java)
+                        startActivity(intent)
+                    }
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.miWeather -> {
+                    if(!item.isChecked) {
+                        val intent = Intent(_main, WeatherActivity::class.java)
+                        startActivity(intent)
+                    }
+                    return@setOnNavigationItemSelectedListener true
+                }
+                else -> false
+            }
+        }
+
+        //FAB
+        val boton = view.findViewById<FloatingActionButton>(R.id.fab)
+        boton.setOnClickListener {
             val intent = Intent(_main, NewArticle::class.java)
             startActivity(intent)
         }
-        return view
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_main, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.Movements -> {
-                startActivity(Intent(_main, MovementsAll::class.java))
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
+        return view
     }
 
 }
