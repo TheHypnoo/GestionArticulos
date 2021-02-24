@@ -1,4 +1,4 @@
-package com.sergigonzalez.gestionarticulos
+package com.sergigonzalez.gestionarticulos.ui.activitys
 
 import android.os.Bundle
 import android.view.View
@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.sergigonzalez.gestionarticulos.R
 import com.sergigonzalez.gestionarticulos.`object`.DialogCalendar
 import com.sergigonzalez.gestionarticulos.adapters.MovementsAdapter
 import com.sergigonzalez.gestionarticulos.data.ArticleApp

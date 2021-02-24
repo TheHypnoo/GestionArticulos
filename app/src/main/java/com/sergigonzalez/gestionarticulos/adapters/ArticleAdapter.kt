@@ -11,9 +11,9 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.sergigonzalez.gestionarticulos.`object`.DialogCalendar
-import com.sergigonzalez.gestionarticulos.MainActivity
-import com.sergigonzalez.gestionarticulos.Movements
-import com.sergigonzalez.gestionarticulos.NewArticle
+import com.sergigonzalez.gestionarticulos.ui.activitys.MainActivity
+import com.sergigonzalez.gestionarticulos.ui.activitys.Movements
+import com.sergigonzalez.gestionarticulos.ui.activitys.NewArticle
 import com.sergigonzalez.gestionarticulos.R
 import com.sergigonzalez.gestionarticulos.data.Article
 import com.sergigonzalez.gestionarticulos.data.ArticleApp

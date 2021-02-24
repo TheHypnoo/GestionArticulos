@@ -16,16 +16,16 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.GestionArticulos">
-        <activity android:name=".WeatherActivity"
+        <activity android:name=".ui.activitys.WeatherActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".MovementsAll"
+            android:name=".ui.activitys.MovementsAll"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Movements"
+            android:name=".ui.activitys.Movements"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.activitys.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NewArticle"
+            android:name=".ui.activitys.NewArticle"
             android:screenOrientation="portrait" />
     </application>
 

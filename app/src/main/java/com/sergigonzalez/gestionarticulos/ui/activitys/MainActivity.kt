@@ -1,21 +1,20 @@
-package com.sergigonzalez.gestionarticulos
+package com.sergigonzalez.gestionarticulos.ui.activitys
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.sergigonzalez.gestionarticulos.R
 import com.sergigonzalez.gestionarticulos.adapters.ArticleAdapter
 import com.sergigonzalez.gestionarticulos.data.Article
 import com.sergigonzalez.gestionarticulos.data.ArticleApp
 import com.sergigonzalez.gestionarticulos.databinding.ActivityMainBinding
+import com.sergigonzalez.gestionarticulos.ui.fragments.FragmentMenu
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,9 +30,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         database = ArticleApp.getDatabase(this)
-        fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.FragmentMenu,fragment)
-        fragmentTransaction.commit()
+//        fragmentTransaction = supportFragmentManager.beginTransaction()
+//        fragmentTransaction.add(R.id.FragmentMenu, fragment)
+//        fragmentTransaction.commit()
+
 
         binding.addArticle.setOnClickListener {
             val intent = Intent(this, NewArticle::class.java)

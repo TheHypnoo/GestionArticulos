@@ -1,4 +1,4 @@
-package com.sergigonzalez.gestionarticulos
+package com.sergigonzalez.gestionarticulos.ui.activitys
 
 import android.content.Context
 import android.database.sqlite.SQLiteConstraintException
@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
+import com.sergigonzalez.gestionarticulos.R
 import com.sergigonzalez.gestionarticulos.data.Article
 import com.sergigonzalez.gestionarticulos.data.ArticleApp
 import kotlinx.coroutines.CoroutineScope

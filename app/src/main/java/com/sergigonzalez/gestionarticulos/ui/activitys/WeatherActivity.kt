@@ -1,4 +1,4 @@
-package com.sergigonzalez.gestionarticulos
+package com.sergigonzalez.gestionarticulos.ui.activitys
 
 import android.app.ProgressDialog
 import android.content.Context
@@ -11,10 +11,9 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.github.matteobattilana.weather.PrecipType
-import com.github.matteobattilana.weather.WeatherData
-import com.github.matteobattilana.weather.WeatherView
 import com.google.android.material.snackbar.Snackbar
 import com.sergigonzalez.gestionarticulos.Interface.HttpService
+import com.sergigonzalez.gestionarticulos.R
 import com.sergigonzalez.gestionarticulos.databinding.ActivityWeatherBinding
 import com.sergigonzalez.gestionarticulos.weather.Weather
 import retrofit2.Call

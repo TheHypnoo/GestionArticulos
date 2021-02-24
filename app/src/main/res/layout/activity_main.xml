@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.activitys.MainActivity">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addArticle"
@@ -44,7 +44,7 @@
         tools:visibility="gone" />
 
     <fragment
-        android:name="com.sergigonzalez.gestionarticulos.FragmentMenu"
+        android:name="com.sergigonzalez.gestionarticulos.ui.fragments.FragmentMenu"
         android:id="@+id/FragmentMenu"
         android:layout_width="0dp"
         android:layout_height="100dp"

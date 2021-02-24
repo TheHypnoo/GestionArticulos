@@ -1,19 +1,20 @@
-package com.sergigonzalez.gestionarticulos
+package com.sergigonzalez.gestionarticulos.ui.activitys
 
 import android.os.Bundle
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.sergigonzalez.gestionarticulos.R
 import com.sergigonzalez.gestionarticulos.`object`.DialogCalendar
-import com.sergigonzalez.gestionarticulos.adapters.ArticleAdapter
-import com.sergigonzalez.gestionarticulos.adapters.MovementsAdapter
 import com.sergigonzalez.gestionarticulos.adapters.MovementsAllAdapter
 import com.sergigonzalez.gestionarticulos.data.ArticleApp
 import com.sergigonzalez.gestionarticulos.data.Movement
+import com.sergigonzalez.gestionarticulos.ui.fragments.FragmentMenu
 import java.text.ParseException
 
 class MovementsAll : AppCompatActivity() {
@@ -22,10 +23,13 @@ class MovementsAll : AppCompatActivity() {
     private lateinit var _calendar: ImageView
     private var listMovements: List<Movement> = emptyList()
     private val database = ArticleApp.getDatabase(this)
+    lateinit var fragmentTransaction: FragmentTransaction
+    private var fragment : FragmentMenu = FragmentMenu()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movements_all)
+
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         edt = findViewById(R.id.edtDateM)

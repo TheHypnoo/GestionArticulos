@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.activitys.MainActivity">
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
@@ -32,5 +32,17 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_add_final"
         app:layout_anchor="@id/bottomAppBar" />
+
+<!-- Modo prueba para Movements, MovementsAll.. !-->
+    <!--
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_search_black_24dp"
+            app:layout_anchorGravity="center|top"
+            android:layout_marginBottom="100dp"
+            app:layout_anchor="@id/fab" />
+            !-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
