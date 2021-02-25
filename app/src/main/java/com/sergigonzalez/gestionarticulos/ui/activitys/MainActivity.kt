@@ -4,25 +4,31 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.behavior.HideBottomViewOnScrollBehavior
 import com.sergigonzalez.gestionarticulos.R
 import com.sergigonzalez.gestionarticulos.adapters.ArticleAdapter
 import com.sergigonzalez.gestionarticulos.data.Article
 import com.sergigonzalez.gestionarticulos.data.ArticleApp
 import com.sergigonzalez.gestionarticulos.databinding.ActivityMainBinding
-import com.sergigonzalez.gestionarticulos.ui.fragments.FragmentMenu
+import com.sergigonzalez.gestionarticulos.ui.fragments.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var database: ArticleApp
     private var listArticles: List<Article> = emptyList()
-    lateinit var fragmentTransaction: FragmentTransaction
     private var fragment : FragmentMenu = FragmentMenu()
+    private var fragmentMain : FragmentMain = FragmentMain()
+    private var fragmentMovementsAll : FragmentMovementsAll = FragmentMovementsAll()
+    private var fragmentAddArticle : FragmentAddArticle = FragmentAddArticle()
+    private var fragmentWeather : FragmentWeather = FragmentWeather()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +36,56 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         database = ArticleApp.getDatabase(this)
+        binding.bottomNavigationView.background = null
+        binding.bottomNavigationView.selectedItemId = R.id.miHome
+        replaceFragment(fragmentMain)
+        binding.bottomNavigationView.menu.getItem(2).isEnabled = false
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.miHome -> {
+                    replaceFragment(fragmentMain)
+                    binding.fab.setImageResource(R.drawable.ic_add_final)
+                    binding.fab.setOnClickListener{
+                        replaceFragment(fragmentAddArticle)
+                        binding.bottomNavigationView.menu.getItem(2).isChecked = true
+                    }
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.miMovements -> {
+                    replaceFragment(fragmentMovementsAll)
+                    binding.fab.setImageResource(R.drawable.ic_search_black_24dp)
+                    binding.fab.setOnClickListener{
+                        binding.bottomNavigationView.menu.getItem(1).isChecked = true
+                    }
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.miWeather -> {
+                    replaceFragment(fragmentWeather)
+                    binding.fab.setImageResource(R.drawable.ic_search_black_24dp)
+                    binding.fab.setOnClickListener{
+                        binding.bottomNavigationView.menu.getItem(3).isChecked = true
+                    }
+                    return@setOnNavigationItemSelectedListener true
+                }
+                else -> false
+            }
+        }
+        binding.fab.setOnClickListener{
+            replaceFragment(fragmentAddArticle)
+            binding.bottomNavigationView.menu.getItem(2).isChecked = true
+        }
+
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragment_container, fragment)
+        transaction.commit()
+    }
+
+
+
+        /*
 //        fragmentTransaction = supportFragmentManager.beginTransaction()
 //        fragmentTransaction.add(R.id.FragmentMenu, fragment)
 //        fragmentTransaction.commit()
@@ -87,8 +143,8 @@ class MainActivity : AppCompatActivity() {
                 binding.lista.visibility = View.VISIBLE
             }
         })
-
-    }
+*/
+    //
 /*
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
