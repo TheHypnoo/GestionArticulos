@@ -7,10 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.sergigonzalez.gestionarticulos.R
 import com.sergigonzalez.gestionarticulos.`object`.DialogCalendar
+import com.sergigonzalez.gestionarticulos.adapters.MovementsAllAdapter
 import com.sergigonzalez.gestionarticulos.data.ArticleApp
 import com.sergigonzalez.gestionarticulos.data.Movement
 import com.sergigonzalez.gestionarticulos.databinding.FragmentMovementsAllBinding
@@ -20,8 +23,6 @@ import java.text.ParseException
 class FragmentMovementsAll : Fragment() {
     private var _binding: FragmentMovementsAllBinding? = null
     private val binding get() = _binding!!
-    private var _list: RecyclerView? = null
-    private lateinit var _calendar: ImageView
     private var listMovements: List<Movement> = emptyList()
     private lateinit var database: ArticleApp
 
@@ -40,18 +41,50 @@ class FragmentMovementsAll : Fragment() {
         binding.calendarM.setOnClickListener {
             DialogCalendar.dialog(this@FragmentMovementsAll.requireContext(), binding.edtDateM)
         }
-/*
-        binding.btnSearchM.setOnClickListener {
-            try {
-                searchMovement()
-            } catch (e: ParseException) {
-                e.printStackTrace()
-            }
-        }
 
-        val btnR = findViewById<View>(R.id.btnResetM) as FloatingActionButton
-        btnR.setOnClickListener { resetMovements() }
-*/
     }
+
+    fun SearchMovement(){
+        if (binding.edtDateM.text.toString().isNotEmpty()) {
+            val date =
+                DialogCalendar.changeFormatDate(binding.edtDateM.text.toString(), "dd/MM/yyyy", "yyyy/MM/dd")
+
+            database.Articles().dateMovements(date).observe(this, {
+                listMovements = it
+                val adapter = MovementsAllAdapter(listMovements)
+                binding.listMovementAll?.layoutManager = LinearLayoutManager(this@FragmentMovementsAll.requireContext())
+                binding.listMovementAll?.addItemDecoration(
+                    DividerItemDecoration(
+                        this@FragmentMovementsAll.requireContext(),
+                        DividerItemDecoration.VERTICAL
+                    )
+                )
+                binding.listMovementAll?.adapter = adapter
+
+            })
+            binding.listMovementAll?.visibility = View.VISIBLE
+        } else {
+            database.Articles().dateMovementsAll().observe(this, {
+                listMovements = it
+                val adapter = MovementsAllAdapter(listMovements)
+                binding.listMovementAll?.layoutManager = LinearLayoutManager(this@FragmentMovementsAll.requireContext())
+                binding.listMovementAll?.addItemDecoration(
+                    DividerItemDecoration(
+                        this@FragmentMovementsAll.requireContext(),
+                        DividerItemDecoration.VERTICAL
+                    )
+                )
+                binding.listMovementAll?.adapter = adapter
+            })
+            binding.listMovementAll?.visibility = View.VISIBLE
+        }
+        binding.edtDateM.setText("")
+    }
+
+    private fun resetMovements() {
+        binding.edtDateM.setText("")
+        binding.listMovementAll?.visibility = View.GONE
+    }
+
 
 }

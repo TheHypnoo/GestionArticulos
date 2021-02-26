@@ -5,30 +5,33 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.sergigonzalez.gestionarticulos.`object`.DialogCalendar
-import com.sergigonzalez.gestionarticulos.ui.activitys.MainActivity
-import com.sergigonzalez.gestionarticulos.ui.activitys.Movements
-import com.sergigonzalez.gestionarticulos.ui.activitys.NewArticle
 import com.sergigonzalez.gestionarticulos.R
+import com.sergigonzalez.gestionarticulos.`object`.DialogCalendar
 import com.sergigonzalez.gestionarticulos.data.Article
 import com.sergigonzalez.gestionarticulos.data.ArticleApp
 import com.sergigonzalez.gestionarticulos.data.Movement
+import com.sergigonzalez.gestionarticulos.ui.activitys.MainActivity
+import com.sergigonzalez.gestionarticulos.ui.activitys.Movements
+import com.sergigonzalez.gestionarticulos.ui.fragments.FragmentAddArticle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
 
-class ArticleAdapter(private val listArticle : List<Article>) : RecyclerView.Adapter<ArticleAdapter.ArticleHolder>(){
+class ArticleAdapter(private val listArticle: List<Article>) : RecyclerView.Adapter<ArticleAdapter.ArticleHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleHolder {
         val viewInflater = LayoutInflater.from(parent.context)
-        return ArticleHolder(viewInflater.inflate(R.layout.item_article,parent,false))
+        return ArticleHolder(viewInflater.inflate(R.layout.item_article, parent, false))
     }
 
     override fun onBindViewHolder(holder: ArticleHolder, position: Int) {
@@ -40,7 +43,7 @@ class ArticleAdapter(private val listArticle : List<Article>) : RecyclerView.Ada
 
     class ArticleHolder(private val view: View): RecyclerView.ViewHolder(view) {
         companion object {
-            fun deleteArticle(article: Article,view : View, database: ArticleApp) {
+            fun deleteArticle(article: Article, view: View, database: ArticleApp) {
                 val builder = AlertDialog.Builder(view.context)
                 builder.setMessage("Estas seguro que deseas eliminar el Articulo?")
 
@@ -65,6 +68,7 @@ class ArticleAdapter(private val listArticle : List<Article>) : RecyclerView.Ada
         private var _month = c[Calendar.MONTH]
         private var _day = c[Calendar.DAY_OF_MONTH]
         private var _main: MainActivity? = null
+        private var fragmentAddArticle : FragmentAddArticle = FragmentAddArticle()
 
         fun render(article: Article) {
             _main = view.context as MainActivity?
@@ -96,7 +100,7 @@ class ArticleAdapter(private val listArticle : List<Article>) : RecyclerView.Ada
             }
 
             delete.setOnClickListener {
-                deleteArticle(article,view,database)
+                deleteArticle(article, view, database)
 
             }
 
@@ -116,13 +120,19 @@ class ArticleAdapter(private val listArticle : List<Article>) : RecyclerView.Ada
             }
 
             view.setOnClickListener{
-                val intent = Intent(view.context, NewArticle::class.java)
-                intent.putExtra("Article", article)
-                intent.putExtra("Edit", true)
-                _main?.startActivity(intent)
+                val bundle = Bundle()
+                bundle.putSerializable("Article", article)
+                bundle.putBoolean("Edit", true)
+                fragmentAddArticle.arguments = bundle
+                replaceFragment(fragmentAddArticle)
             }
 
 
+        }
+
+        private fun replaceFragment(fragment: Fragment) {
+            (view.context as FragmentActivity).supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment).commit()
         }
 
         @SuppressLint("SetTextI18n", "ShowToast")
@@ -174,12 +184,14 @@ class ArticleAdapter(private val listArticle : List<Article>) : RecyclerView.Ada
                         )
                         if (moreOrLess) {
                             val sumaStock =
-                                article.stockArticle.toString().toInt() + stock.text.toString().toInt()
+                                article.stockArticle.toString().toInt() + stock.text.toString()
+                                    .toInt()
                             article.stockArticle = sumaStock
                             type = 'E'
                         } else {
                             val restaStock =
-                                article.stockArticle.toString().toInt() - stock.text.toString().toInt()
+                                article.stockArticle.toString().toInt() - stock.text.toString()
+                                    .toInt()
                             article.stockArticle = restaStock
                             type = 'S'
                         }
@@ -196,7 +208,11 @@ class ArticleAdapter(private val listArticle : List<Article>) : RecyclerView.Ada
                             database.Articles().update(article)
                             database.Articles().insertMovement(movement)
                         }
-                        Toast.makeText(view.context, "Movimiento y Articulo actualizado", Toast.LENGTH_SHORT)
+                        Toast.makeText(
+                            view.context,
+                            "Movimiento y Articulo actualizado",
+                            Toast.LENGTH_SHORT
+                        )
                     } catch (e: Exception) {
                         Toast.makeText(
                             view.context,

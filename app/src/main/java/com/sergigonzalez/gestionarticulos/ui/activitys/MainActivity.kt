@@ -1,19 +1,9 @@
 package com.sergigonzalez.gestionarticulos.ui.activitys
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.behavior.HideBottomViewOnScrollBehavior
 import com.sergigonzalez.gestionarticulos.R
-import com.sergigonzalez.gestionarticulos.adapters.ArticleAdapter
 import com.sergigonzalez.gestionarticulos.data.Article
 import com.sergigonzalez.gestionarticulos.data.ArticleApp
 import com.sergigonzalez.gestionarticulos.databinding.ActivityMainBinding
@@ -23,8 +13,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var database: ArticleApp
-    private var listArticles: List<Article> = emptyList()
-    private var fragment : FragmentMenu = FragmentMenu()
     private var fragmentMain : FragmentMain = FragmentMain()
     private var fragmentMovementsAll : FragmentMovementsAll = FragmentMovementsAll()
     private var fragmentAddArticle : FragmentAddArticle = FragmentAddArticle()
@@ -56,6 +44,7 @@ class MainActivity : AppCompatActivity() {
                     binding.fab.setImageResource(R.drawable.ic_search_black_24dp)
                     binding.fab.setOnClickListener{
                         binding.bottomNavigationView.menu.getItem(1).isChecked = true
+                        fragmentMovementsAll.SearchMovement()
                     }
                     return@setOnNavigationItemSelectedListener true
                 }
@@ -64,6 +53,7 @@ class MainActivity : AppCompatActivity() {
                     binding.fab.setImageResource(R.drawable.ic_search_black_24dp)
                     binding.fab.setOnClickListener{
                         binding.bottomNavigationView.menu.getItem(3).isChecked = true
+                        fragmentWeather.Search()
                     }
                     return@setOnNavigationItemSelectedListener true
                 }

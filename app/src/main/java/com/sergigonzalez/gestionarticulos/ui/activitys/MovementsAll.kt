@@ -14,7 +14,6 @@ import com.sergigonzalez.gestionarticulos.`object`.DialogCalendar
 import com.sergigonzalez.gestionarticulos.adapters.MovementsAllAdapter
 import com.sergigonzalez.gestionarticulos.data.ArticleApp
 import com.sergigonzalez.gestionarticulos.data.Movement
-import com.sergigonzalez.gestionarticulos.ui.fragments.FragmentMenu
 import java.text.ParseException
 
 class MovementsAll : AppCompatActivity() {
@@ -24,7 +23,6 @@ class MovementsAll : AppCompatActivity() {
     private var listMovements: List<Movement> = emptyList()
     private val database = ArticleApp.getDatabase(this)
     lateinit var fragmentTransaction: FragmentTransaction
-    private var fragment : FragmentMenu = FragmentMenu()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
