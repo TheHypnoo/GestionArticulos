@@ -1,5 +1,6 @@
 package com.sergigonzalez.gestionarticulos.adapters
 
+import android.R.attr.fragment
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.DialogInterface

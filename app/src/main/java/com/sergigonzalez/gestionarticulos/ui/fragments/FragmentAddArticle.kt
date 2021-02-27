@@ -83,14 +83,25 @@ class FragmentAddArticle : Fragment() {
                 }
             }
         }
+        checkRun()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
         article = arguments?.getSerializable("Article") as Article?
-        Edit = arguments?.getBoolean("Edit") == false
+        Edit = arguments?.getBoolean("Edit") == true
+    }
+
+    private fun checkRun(){
         if (Edit) {
             binding.edtCode.isEnabled = false
             binding.edtStock.isEnabled = false
+        } else {
+            binding.edtStock.isEnabled = false
+
         }
-/*
-        if(article?.idArticle!=" ") {
+
+        if (article != null) {
             _id = article!!._id
             binding.edtCode.setText(article!!.idArticle)
             binding.edtDes.setText(article!!.descriptionArticle)
@@ -113,12 +124,12 @@ class FragmentAddArticle : Fragment() {
             }
             idArticle = article!!.idArticle
         }
-*/
+
         binding.saveBtn.setOnClickListener{
             val id: String
             val descripcion: String
             val precio: Double
-            val stock: Int
+            var stock = 0
             //Probar el View...
             val view: View? = this@FragmentAddArticle.view?.findFocus()
 
@@ -131,7 +142,7 @@ class FragmentAddArticle : Fragment() {
                     ) as InputMethodManager
                     imm.hideSoftInputFromWindow(view.windowToken, 0)
                 }
-                //snackbarMessage("Debes introducir un codigo")
+                snackbarMessage("Debes introducir un codigo")
                 return@setOnClickListener
             }
 
@@ -227,11 +238,9 @@ class FragmentAddArticle : Fragment() {
                         snackbarMessage("Ya existe el mismo codigo")
                     }
                 }
-
             }
-
         }
-        }
+    }
 
     private fun snackbarMessage(_message: String) {
         //Modo prueba
