@@ -5,15 +5,13 @@ import android.database.sqlite.SQLiteConstraintException
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Spinner
-import androidx.core.content.ContextCompat.getSystemService
+import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.sergigonzalez.gestionarticulos.R
 import com.sergigonzalez.gestionarticulos.data.Article
@@ -32,7 +30,7 @@ class FragmentAddArticle : Fragment() {
     private var Edit: Boolean = false
     private var article : Article? = null
     private var idArticle: String? = null
-
+    private val fragmentMain : FragmentMain = FragmentMain()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -49,7 +47,11 @@ class FragmentAddArticle : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ArrayAdapter.createFromResource(this@FragmentAddArticle.requireContext(), R.array.family, android.R.layout.simple_spinner_item)
+        ArrayAdapter.createFromResource(
+            this@FragmentAddArticle.requireContext(),
+            R.array.family,
+            android.R.layout.simple_spinner_item
+        )
             .also { adapter ->
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding.familySpinner.adapter = adapter
@@ -98,7 +100,6 @@ class FragmentAddArticle : Fragment() {
             binding.edtStock.isEnabled = false
         } else {
             binding.edtStock.isEnabled = false
-
         }
 
         if (article != null) {
@@ -155,13 +156,18 @@ class FragmentAddArticle : Fragment() {
                     ) as InputMethodManager
                     imm.hideSoftInputFromWindow(view.windowToken, 0)
                 }
-                //snackbarMessage("Debes introducir una descripción")
+                snackbarMessage("Debes introducir una descripción")
                 return@setOnClickListener
             }
 
             if (TryCatchDouble(binding.edtPVP.text.toString().replace(",".toRegex(), "."))) {
                 precio =
-                    java.lang.Double.valueOf(binding.edtPVP.text.toString().replace(",".toRegex(), "."))
+                    java.lang.Double.valueOf(
+                        binding.edtPVP.text.toString().replace(
+                            ",".toRegex(),
+                            "."
+                        )
+                    )
             } else {
                 if (view != null) {
                     val imm = requireActivity().getSystemService(
@@ -184,7 +190,7 @@ class FragmentAddArticle : Fragment() {
                 return@setOnClickListener
             }
 
-            if (TryCatchInt(binding.edtStock.text.toString().replace(",".toRegex(), "."))) {
+/*            if (TryCatchInt(binding.edtStock.text.toString().replace(",".toRegex(), "."))) {
                 stock = Integer.valueOf(binding.edtStock.text.toString().replace(",".toRegex(), "."))
             } else {
                 if (view != null) {
@@ -195,7 +201,7 @@ class FragmentAddArticle : Fragment() {
                 }
                 snackbarMessage("Debes introducir un Stock")
                 return@setOnClickListener
-            }
+            }*/
 
             val article = Article(_id, id, descripcion, family, precio, stock)
 
@@ -218,7 +224,7 @@ class FragmentAddArticle : Fragment() {
                         snackbarMessage("Has creado el Articulo correctamente")
                     }
                     Handler(Looper.getMainLooper()).postDelayed({
-                        //this@FragmentAddArticle.activity?.finish()
+                        replaceFragment(fragmentMain)
                     }, 500)
                 }
             } else {
@@ -227,7 +233,7 @@ class FragmentAddArticle : Fragment() {
                     try {
                         database.Articles().insertAll(article)
 
-                        //this@FragmentAddArticle.activity?.finish()
+                        replaceFragment(fragmentMain)
                     } catch (e: SQLiteConstraintException) {
                         if (view != null) {
                             val imm = requireActivity().getSystemService(
@@ -265,6 +271,12 @@ class FragmentAddArticle : Fragment() {
             a = false
         }
         return a
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        val transaction = activity?.supportFragmentManager?.beginTransaction()
+        transaction?.replace(R.id.fragment_container, fragment)
+        transaction?.commit()
     }
 
 

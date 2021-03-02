@@ -14,11 +14,6 @@ import com.sergigonzalez.gestionarticulos.data.Article
 import com.sergigonzalez.gestionarticulos.data.ArticleApp
 import com.sergigonzalez.gestionarticulos.databinding.FragmentMainBinding
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FragmentMain.newInstance] factory method to
- * create an instance of this fragment.
- */
 class FragmentMain : Fragment() {
     private lateinit var database: ArticleApp
     private var listArticles: List<Article> = emptyList()

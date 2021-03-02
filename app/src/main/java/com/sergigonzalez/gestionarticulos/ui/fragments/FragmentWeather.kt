@@ -80,7 +80,7 @@ class FragmentWeather : Fragment() {
             override fun onFailure(call: Call<Weather>, t: Throwable) {
                 t.message?.let {
                     Snackbar.make(
-                        binding.coord,
+                        binding.CLayout,
                         it, Snackbar.LENGTH_SHORT
                     ).show()
                 }
@@ -93,7 +93,7 @@ class FragmentWeather : Fragment() {
 
                 if (!response!!.isSuccessful) {
 
-                    Snackbar.make(binding.coord, response.code().toString(), Snackbar.LENGTH_SHORT)
+                    Snackbar.make(binding.CLayout, response.code().toString(), Snackbar.LENGTH_SHORT)
                         .show()
                     Dialog.hide()
                     return

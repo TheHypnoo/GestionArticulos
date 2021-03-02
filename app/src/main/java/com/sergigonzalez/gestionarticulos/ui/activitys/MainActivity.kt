@@ -13,10 +13,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var database: ArticleApp
-    private var fragmentMain : FragmentMain = FragmentMain()
-    private var fragmentMovementsAll : FragmentMovementsAll = FragmentMovementsAll()
-    private var fragmentAddArticle : FragmentAddArticle = FragmentAddArticle()
-    private var fragmentWeather : FragmentWeather = FragmentWeather()
+    private val fragmentMain : FragmentMain = FragmentMain()
+    private val fragmentMovementsAll : FragmentMovementsAll = FragmentMovementsAll()
+    private val fragmentWeather : FragmentWeather = FragmentWeather()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +33,7 @@ class MainActivity : AppCompatActivity() {
                     replaceFragment(fragmentMain)
                     binding.fab.setImageResource(R.drawable.ic_add_final)
                     binding.fab.setOnClickListener{
-                        replaceFragment(fragmentAddArticle)
+                        replaceFragment(fragment = FragmentAddArticle())
                         binding.bottomNavigationView.menu.getItem(2).isChecked = true
                     }
                     return@setOnNavigationItemSelectedListener true
@@ -61,7 +60,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.fab.setOnClickListener{
-            replaceFragment(fragmentAddArticle)
+            replaceFragment(fragment = FragmentAddArticle())
             binding.bottomNavigationView.menu.getItem(2).isChecked = true
         }
 
