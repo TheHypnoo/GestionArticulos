@@ -51,9 +51,15 @@ class FragmentMovementsAll : Fragment() {
 
             database.Articles().dateMovements(date).observe(this, {
                 listMovements = it
+                if(listMovements.isEmpty()) {
+                    binding.tvEmptyVievMovementsAll.text = "No hay ningún movimiento"
+                } else {
+                    binding.tvEmptyVievMovementsAll.visibility = View.GONE
+                    binding.listMovementAll.visibility = View.VISIBLE
+                }
                 val adapter = MovementsAllAdapter(listMovements)
-                binding.listMovementAll?.layoutManager = LinearLayoutManager(this@FragmentMovementsAll.requireContext())
-                binding.listMovementAll?.addItemDecoration(
+                binding.listMovementAll.layoutManager = LinearLayoutManager(this@FragmentMovementsAll.requireContext())
+                binding.listMovementAll.addItemDecoration(
                     DividerItemDecoration(
                         this@FragmentMovementsAll.requireContext(),
                         DividerItemDecoration.VERTICAL
@@ -66,6 +72,12 @@ class FragmentMovementsAll : Fragment() {
         } else {
             database.Articles().dateMovementsAll().observe(this, {
                 listMovements = it
+                if(listMovements.isEmpty()) {
+                    binding.tvEmptyVievMovementsAll.text = "No hay ningún movimiento"
+                } else {
+                    binding.tvEmptyVievMovementsAll.visibility = View.GONE
+                    binding.listMovementAll.visibility = View.VISIBLE
+                }
                 val adapter = MovementsAllAdapter(listMovements)
                 binding.listMovementAll?.layoutManager = LinearLayoutManager(this@FragmentMovementsAll.requireContext())
                 binding.listMovementAll?.addItemDecoration(

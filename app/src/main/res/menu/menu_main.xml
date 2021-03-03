@@ -38,6 +38,7 @@
         android:title="Z - A"
         app:showAsAction="never">
     </item>
+    <!--
     <item
         android:id="@+id/Movements"
         android:icon="@drawable/ic_move_to_inbox_black_24dp"
@@ -50,6 +51,6 @@
         android:icon="@drawable/ic_beach_access_black_24dp"
         android:title="Weather"
         app:showAsAction="ifRoom">
-    </item>
+    </item>-->
 
 </menu>

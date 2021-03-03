@@ -1,8 +1,8 @@
 package com.sergigonzalez.gestionarticulos.adapters
 
-import android.R.attr.fragment
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.app.PendingIntent.getActivity
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
@@ -20,8 +20,8 @@ import com.sergigonzalez.gestionarticulos.data.Article
 import com.sergigonzalez.gestionarticulos.data.ArticleApp
 import com.sergigonzalez.gestionarticulos.data.Movement
 import com.sergigonzalez.gestionarticulos.ui.activitys.MainActivity
-import com.sergigonzalez.gestionarticulos.ui.activitys.Movements
 import com.sergigonzalez.gestionarticulos.ui.fragments.FragmentAddArticle
+import com.sergigonzalez.gestionarticulos.ui.fragments.FragmentMovements
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -44,21 +44,10 @@ class ArticleAdapter(private val listArticle: List<Article>) : RecyclerView.Adap
 
     class ArticleHolder(private val view: View): RecyclerView.ViewHolder(view) {
         companion object {
-            fun deleteArticle(article: Article, view: View, database: ArticleApp) {
-                val builder = AlertDialog.Builder(view.context)
-                builder.setMessage("Estas seguro que deseas eliminar el Articulo?")
-
-                builder.setPositiveButton(android.R.string.ok) { _, _ ->
-                    CoroutineScope(Dispatchers.IO).launch {
-                        database.Articles().delete(article)
-                    }
+            fun deleteArticle(article: Article, database: ArticleApp) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    database.Articles().delete(article)
                 }
-
-                builder.setNegativeButton(android.R.string.cancel) { dialog, _ ->
-                    dialog.dismiss()
-                }
-
-                builder.show()
             }
         }
         private val noHaveStock = "#d78290"
@@ -70,6 +59,7 @@ class ArticleAdapter(private val listArticle: List<Article>) : RecyclerView.Adap
         private var _day = c[Calendar.DAY_OF_MONTH]
         private var _main: MainActivity? = null
         private var fragmentAddArticle : FragmentAddArticle = FragmentAddArticle()
+        private var fragmentMovements : FragmentMovements = FragmentMovements()
 
         fun render(article: Article) {
             _main = view.context as MainActivity?
@@ -101,7 +91,20 @@ class ArticleAdapter(private val listArticle: List<Article>) : RecyclerView.Adap
             }
 
             delete.setOnClickListener {
-                deleteArticle(article, view, database)
+                val builder = AlertDialog.Builder(view.context)
+                builder.setMessage("Estas seguro que deseas eliminar el Articulo?\nCon codigo: ${article.idArticle}\nDescripción:  ${article.descriptionArticle}")
+
+                builder.setPositiveButton(android.R.string.ok) { _, _ ->
+                    CoroutineScope(Dispatchers.IO).launch {
+                        deleteArticle(article, database)
+                    }
+                }
+
+                builder.setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                    dialog.dismiss()
+                }
+
+                builder.show()
 
             }
 
@@ -115,9 +118,16 @@ class ArticleAdapter(private val listArticle: List<Article>) : RecyclerView.Adap
             }
 
             movement.setOnClickListener {
-                val intent = Intent(view.context, Movements::class.java)
-                intent.putExtra("idArticle", article.idArticle)
-                _main?.startActivity(intent)
+                val bundle = Bundle()
+                bundle.putString("idArticle", article.idArticle)
+                fragmentMovements.arguments = bundle
+                replaceFragment(fragmentMovements)
+                _main?.bottomNavigationView?.menu?.getItem(2)?.isChecked = true
+                _main?.fab?.setImageResource(R.drawable.ic_search_black_24dp)
+                _main?.appbar?.performShow()
+                _main?.fab?.setOnClickListener{
+                    fragmentMovements.search()
+                }
             }
 
             view.setOnClickListener{
@@ -126,6 +136,8 @@ class ArticleAdapter(private val listArticle: List<Article>) : RecyclerView.Adap
                 bundle.putBoolean("Edit", true)
                 fragmentAddArticle.arguments = bundle
                 replaceFragment(fragmentAddArticle)
+                _main?.appbar?.performShow()
+                _main?.bottomNavigationView?.menu?.getItem(2)?.isChecked = true
             }
 
 

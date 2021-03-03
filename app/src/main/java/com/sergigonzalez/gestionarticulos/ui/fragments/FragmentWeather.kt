@@ -51,7 +51,7 @@ class FragmentWeather : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
-        binding.coord.background =
+        binding.background.background =
             ContextCompat.getDrawable(
                 this@FragmentWeather.requireContext(),
                 R.drawable.backgroundweather
@@ -80,7 +80,7 @@ class FragmentWeather : Fragment() {
             override fun onFailure(call: Call<Weather>, t: Throwable) {
                 t.message?.let {
                     Snackbar.make(
-                        binding.CLayout,
+                        binding.root,
                         it, Snackbar.LENGTH_SHORT
                     ).show()
                 }
@@ -93,7 +93,7 @@ class FragmentWeather : Fragment() {
 
                 if (!response!!.isSuccessful) {
 
-                    Snackbar.make(binding.CLayout, response.code().toString(), Snackbar.LENGTH_SHORT)
+                    Snackbar.make(binding.root, response.code().toString(), Snackbar.LENGTH_SHORT)
                         .show()
                     Dialog.hide()
                     return

@@ -27,7 +27,7 @@
         android:text="No hay ningún articulo\nDale al + para crear un articulo"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,10 +38,11 @@
         android:id="@+id/lista"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:hideOnScroll="true"
+        android:paddingBottom="?attr/actionBarSize"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="gone" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

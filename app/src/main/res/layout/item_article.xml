@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/Article"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/Article"
     android:baselineAligned="false">
 
     <LinearLayout
@@ -68,9 +68,8 @@
         <ImageView
             android:id="@+id/Mas"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_margin="10dp"
-            android:layout_weight="3"
             android:contentDescription="@string/todo"
             app:srcCompat="@drawable/ic_add_black_24dp" />
 
@@ -130,12 +129,10 @@
         <ImageView
             android:id="@+id/Storie"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="35dp"
             android:layout_margin="10dp"
-            android:layout_weight="0.5"
             android:contentDescription="@string/todo"
-            app:srcCompat="@drawable/ic_history_black_24dp"
-            tools:ignore="NestedWeights" />
+            app:srcCompat="@drawable/ic_history_black_24dp" />
 
 
     </LinearLayout>
@@ -160,8 +157,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@drawable/ic_delete_black_24dp"
-            android:contentDescription="@string/todo" />
+            android:contentDescription="@string/todo"
+            app:srcCompat="@drawable/ic_delete_black_24dp" />
 
         <TextView
             android:id="@+id/textView6"
@@ -174,9 +171,8 @@
         <ImageView
             android:id="@+id/Menos"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_margin="10dp"
-            android:layout_weight="0.2"
             android:contentDescription="@string/todo"
             app:srcCompat="@drawable/ic_remove_black_24dp" />
 

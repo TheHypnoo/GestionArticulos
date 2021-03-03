@@ -55,11 +55,23 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/tvEmptyVievMovementsAll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="24dp"
+            android:text="Escoge fecha(opcional) y busca"
+            android:visibility="visible"
+            />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_movement_all"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="8dp">
+            android:layout_margin="8dp"
+            android:visibility="gone">
 
         </androidx.recyclerview.widget.RecyclerView>
 

@@ -3,6 +3,9 @@ package com.sergigonzalez.gestionarticulos.ui.activitys
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.sergigonzalez.gestionarticulos.R
 import com.sergigonzalez.gestionarticulos.data.Article
 import com.sergigonzalez.gestionarticulos.data.ArticleApp
@@ -16,13 +19,18 @@ class MainActivity : AppCompatActivity() {
     private val fragmentMain : FragmentMain = FragmentMain()
     private val fragmentMovementsAll : FragmentMovementsAll = FragmentMovementsAll()
     private val fragmentWeather : FragmentWeather = FragmentWeather()
-
+    lateinit var bottomNavigationView: BottomNavigationView
+    lateinit var fab: FloatingActionButton
+    lateinit var appbar: BottomAppBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         database = ArticleApp.getDatabase(this)
+        bottomNavigationView = binding.bottomNavigationView
+        fab = binding.fab
+        appbar = binding.bottomAppBar
         binding.bottomNavigationView.background = null
         binding.bottomNavigationView.selectedItemId = R.id.miHome
         replaceFragment(fragmentMain)
@@ -34,6 +42,7 @@ class MainActivity : AppCompatActivity() {
                     binding.fab.setImageResource(R.drawable.ic_add_final)
                     binding.fab.setOnClickListener{
                         replaceFragment(fragment = FragmentAddArticle())
+                        binding.bottomAppBar.performShow()
                         binding.bottomNavigationView.menu.getItem(2).isChecked = true
                     }
                     return@setOnNavigationItemSelectedListener true
@@ -43,6 +52,7 @@ class MainActivity : AppCompatActivity() {
                     binding.fab.setImageResource(R.drawable.ic_search_black_24dp)
                     binding.fab.setOnClickListener{
                         binding.bottomNavigationView.menu.getItem(1).isChecked = true
+                        binding.bottomAppBar.performShow()
                         fragmentMovementsAll.SearchMovement()
                     }
                     return@setOnNavigationItemSelectedListener true
@@ -52,6 +62,7 @@ class MainActivity : AppCompatActivity() {
                     binding.fab.setImageResource(R.drawable.ic_search_black_24dp)
                     binding.fab.setOnClickListener{
                         binding.bottomNavigationView.menu.getItem(3).isChecked = true
+                        binding.bottomAppBar.performShow()
                         fragmentWeather.Search()
                     }
                     return@setOnNavigationItemSelectedListener true
