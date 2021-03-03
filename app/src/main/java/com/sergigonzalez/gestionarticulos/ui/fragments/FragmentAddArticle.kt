@@ -47,7 +47,6 @@ class FragmentAddArticle : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.title = "Add Article"
         ArrayAdapter.createFromResource(
             this@FragmentAddArticle.requireContext(),
             R.array.family,
@@ -101,6 +100,7 @@ class FragmentAddArticle : Fragment() {
             binding.edtStock.isEnabled = false
         } else {
             binding.edtStock.isEnabled = false
+            activity?.title = "Create new Article"
         }
 
         if (article != null) {
@@ -125,6 +125,7 @@ class FragmentAddArticle : Fragment() {
                 }
             }
             idArticle = article!!.idArticle
+            activity?.title = "Edit $idArticle"
         }
 
         binding.saveBtn.setOnClickListener{

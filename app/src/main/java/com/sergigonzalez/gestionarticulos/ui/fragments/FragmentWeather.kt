@@ -112,6 +112,13 @@ class FragmentWeather : Fragment() {
                     binding.tvTemp.text = "${Convert(cityList.main.temp).toInt()} º"
                     binding.tvWeather.text = cityList.weather[0].description
                     when (cityList.weather[0].description) {
+                        "lluvia" -> {
+                            weather = PrecipType.RAIN
+                            binding.weatherView.apply {
+                                setWeatherData(weather)
+                                speed = 600
+                            }
+                        }
                         "lluvia ligera" -> {
                             weather = PrecipType.RAIN
                             binding.weatherView.apply {
@@ -119,8 +126,13 @@ class FragmentWeather : Fragment() {
                                 speed = 600
                             }
                         }
-                        "nubes" ->
-                            binding.weatherView.setWeatherData(PrecipType.CLEAR)
+                        "lluvia intensa" -> {
+                            weather = PrecipType.RAIN
+                            binding.weatherView.apply {
+                                setWeatherData(weather)
+                                speed = 600
+                            }
+                        }
                         "nieve" -> {
                             weather = PrecipType.SNOW
                             binding.weatherView.apply {
@@ -141,6 +153,17 @@ class FragmentWeather : Fragment() {
                                 fadeOutPercent = .85f
                             }
                         }
+                        "nevada ligera" -> {
+                            weather = PrecipType.SNOW
+                            binding.weatherView.apply {
+                                setWeatherData(weather)
+                                speed = 350
+                                emissionRate = 100f
+                                angle = 20
+                                fadeOutPercent = .85f
+                            }
+                        }
+                        else -> binding.weatherView.setWeatherData(PrecipType.CLEAR)
                     }
                     binding.tvFeel.text =
                         "Sensacion termica: ${Convert(cityList.main.feelsLike).toInt()} º"
