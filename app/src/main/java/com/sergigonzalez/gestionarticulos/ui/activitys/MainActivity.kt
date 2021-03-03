@@ -16,9 +16,12 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var database: ArticleApp
+
     private val fragmentMain : FragmentMain = FragmentMain()
     private val fragmentMovementsAll : FragmentMovementsAll = FragmentMovementsAll()
     private val fragmentWeather : FragmentWeather = FragmentWeather()
+    private val fragmentInfo : FragmentInfo = FragmentInfo()
+
     lateinit var bottomNavigationView: BottomNavigationView
     lateinit var fab: FloatingActionButton
     lateinit var appbar: BottomAppBar
@@ -65,6 +68,10 @@ class MainActivity : AppCompatActivity() {
                         binding.bottomAppBar.performShow()
                         fragmentWeather.Search()
                     }
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.miInfo -> {
+                    replaceFragment(fragmentInfo)
                     return@setOnNavigationItemSelectedListener true
                 }
                 else -> false
