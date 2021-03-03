@@ -30,7 +30,11 @@ class FragmentInfo : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val fadein = AnimationUtils.loadAnimation(this@FragmentInfo.requireContext(), R.anim.fade_in)
+        activity?.title = "Info"
+        val fadein = AnimationUtils.loadAnimation(
+            this@FragmentInfo.requireContext(),
+            R.anim.fade_in
+        )
         val rotate = AnimationUtils.loadAnimation(this@FragmentInfo.requireContext(), R.anim.rotate)
         binding.tvCreatedBy.startAnimation(fadein)
         binding.tvCreatedBy.startAnimation(rotate)

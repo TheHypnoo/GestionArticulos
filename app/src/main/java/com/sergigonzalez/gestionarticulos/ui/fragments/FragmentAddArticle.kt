@@ -47,6 +47,7 @@ class FragmentAddArticle : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity?.title = "Add Article"
         ArrayAdapter.createFromResource(
             this@FragmentAddArticle.requireContext(),
             R.array.family,

@@ -7,7 +7,6 @@ import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.sergigonzalez.gestionarticulos.R
-import com.sergigonzalez.gestionarticulos.data.Article
 import com.sergigonzalez.gestionarticulos.data.ArticleApp
 import com.sergigonzalez.gestionarticulos.databinding.ActivityMainBinding
 import com.sergigonzalez.gestionarticulos.ui.fragments.*
@@ -43,7 +42,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.miHome -> {
                     replaceFragment(fragmentMain)
                     binding.fab.setImageResource(R.drawable.ic_add_final)
-                    binding.fab.setOnClickListener{
+                    binding.fab.setOnClickListener {
                         replaceFragment(fragment = FragmentAddArticle())
                         binding.bottomAppBar.performShow()
                         binding.bottomNavigationView.menu.getItem(2).isChecked = true
@@ -53,7 +52,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.miMovements -> {
                     replaceFragment(fragmentMovementsAll)
                     binding.fab.setImageResource(R.drawable.ic_search_black_24dp)
-                    binding.fab.setOnClickListener{
+                    binding.fab.setOnClickListener {
                         binding.bottomNavigationView.menu.getItem(1).isChecked = true
                         binding.bottomAppBar.performShow()
                         fragmentMovementsAll.SearchMovement()
@@ -63,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.miWeather -> {
                     replaceFragment(fragmentWeather)
                     binding.fab.setImageResource(R.drawable.ic_search_black_24dp)
-                    binding.fab.setOnClickListener{
+                    binding.fab.setOnClickListener {
                         binding.bottomNavigationView.menu.getItem(3).isChecked = true
                         binding.bottomAppBar.performShow()
                         fragmentWeather.Search()
@@ -89,6 +88,7 @@ class MainActivity : AppCompatActivity() {
         transaction.replace(R.id.fragment_container, fragment)
         transaction.commit()
     }
+
 
 
 

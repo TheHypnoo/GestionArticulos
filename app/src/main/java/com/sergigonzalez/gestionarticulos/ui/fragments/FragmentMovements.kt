@@ -47,7 +47,7 @@ class FragmentMovements : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         idArticle = arguments?.getString("idArticle").toString()
-        println(idArticle)
+        activity?.title = "Movements"
     }
 
     fun search(){

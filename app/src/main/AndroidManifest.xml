@@ -16,14 +16,6 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.GestionArticulos">
-        <activity android:name=".ui.activitys.WeatherActivity"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".ui.activitys.MovementsAll"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activitys.Movements"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activitys.MainActivity"
             android:screenOrientation="portrait">
@@ -33,9 +25,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.activitys.NewArticle"
-            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

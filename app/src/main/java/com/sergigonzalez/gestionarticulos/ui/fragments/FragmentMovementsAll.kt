@@ -37,6 +37,7 @@ class FragmentMovementsAll : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity?.title = "Movements All"
         database = ArticleApp.getDatabase(this@FragmentMovementsAll.requireContext())
         binding.calendarM.setOnClickListener {
             DialogCalendar.dialog(this@FragmentMovementsAll.requireContext(), binding.edtDateM)
