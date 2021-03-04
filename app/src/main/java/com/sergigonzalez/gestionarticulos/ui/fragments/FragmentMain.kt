@@ -29,7 +29,7 @@ class FragmentMain : Fragment() {
     private var filterWithOutStock: Boolean = false
     private lateinit var description: String
     private var singlePosition = 0
-    private var orderType = "idArticle"
+    private var orderType = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -212,8 +212,8 @@ class FragmentMain : Fragment() {
             "Insertar fecha (la más reciente primero)",
             "Código de artículo (A-Z)",
             "Código de artículo (Z-A)",
-            "Precio de menor a mayor",
-            "Precio de mayor a menor"
+            "Precio de mayor a menor",
+            "Precio de menor a mayor"
         )
         alert.setSingleChoiceItems(
             sorts, singlePosition
@@ -229,15 +229,14 @@ class FragmentMain : Fragment() {
     }
 
     private fun selectOrder() {
-        println("hola?")
         when (singlePosition) {
-            1 -> orderType = "idArticle DESC"
-            2 -> orderType = "_id"
-            3 -> orderType = "idArticle"
-            4 -> orderType = "idArticle DESC"
-            5 -> orderType = "priceArticle"
-            6 -> orderType = "priceArticle DESC"
-            else -> orderType = "_id"
+            1 -> orderType = 1
+            2 -> orderType = 2
+            3 -> orderType = 3
+            4 -> orderType = 4
+            5 -> orderType = 5
+            6 -> orderType = 6
+            else -> orderType = 2
         }
         refresh()
     }
