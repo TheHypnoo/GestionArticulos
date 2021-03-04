@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
+import com.sergigonzalez.gestionarticulos.BuildConfig
 import com.sergigonzalez.gestionarticulos.R
 import com.sergigonzalez.gestionarticulos.databinding.FragmentInfoBinding
 
@@ -31,6 +32,7 @@ class FragmentInfo : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.title = "Info"
+        binding.tvVersion.text = "Version: ${BuildConfig.VERSION_NAME}";
         val fadein = AnimationUtils.loadAnimation(
             this@FragmentInfo.requireContext(),
             R.anim.fade_in
