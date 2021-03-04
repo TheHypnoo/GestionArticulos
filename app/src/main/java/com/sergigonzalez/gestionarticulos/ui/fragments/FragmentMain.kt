@@ -21,6 +21,7 @@ import com.sergigonzalez.gestionarticulos.databinding.FragmentMainBinding
 
 class FragmentMain : Fragment() {
     private lateinit var database: ArticleApp
+    private var article: Article = Article()
     private var listArticles: List<Article> = emptyList()
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
@@ -28,6 +29,7 @@ class FragmentMain : Fragment() {
     private var filterWithOutStock: Boolean = false
     private lateinit var description: String
     private var singlePosition = 0
+    private var orderType = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -137,10 +139,10 @@ class FragmentMain : Fragment() {
 
     private fun alertFilter() {
         val alert = androidx.appcompat.app.AlertDialog.Builder(this@FragmentMain.requireContext())
-        alert.setTitle("Select filters")
+        alert.setTitle("Selecciona un filtro")
         val filtres = arrayOf(
-            "Article With description",
-            "Article Without stock"
+            "Articulo con descripción",
+            "Articulo sin stock"
         )
         val filtresSeleccionats = booleanArrayOf(filterDescription, filterWithOutStock)
         alert.setMultiChoiceItems(
@@ -154,7 +156,7 @@ class FragmentMain : Fragment() {
             if (filterDescription) {
                 alertDescription()
             } else {
-                selectOrder()
+                refresh()
             }
         }
         alert.setNegativeButton(android.R.string.cancel, null)
@@ -175,22 +177,22 @@ class FragmentMain : Fragment() {
     private fun alertDescription() {
         if (filterDescription) {
             val alert = AlertDialog.Builder(this@FragmentMain.requireContext()).create()
-            alert.setTitle("Write the word you want to filter from the article description")
+            alert.setTitle("Escribe una palabra para filtrar el articulo en la descripción")
             val edtDescription = EditText(this@FragmentMain.requireContext())
             alert.setView(edtDescription)
             alert.setButton(
-                AlertDialog.BUTTON_POSITIVE,"Aceptar"
+                AlertDialog.BUTTON_POSITIVE, "Aceptar"
             ) { dialog, which ->
                 try {
                     description = edtDescription.text.toString().toLowerCase()
                 } catch (e: Exception) {
                     description = ""
-                    snackbarMessage("Articles could not be filtered",false)
+                    snackbarMessage("No ha sido filtrado el articulo", false)
                 }
                 if (description.isEmpty()) {
                     filterDescription = false
                 }
-                selectOrder()
+                refresh()
             }
             alert.setButton(
                 androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE,
@@ -204,14 +206,14 @@ class FragmentMain : Fragment() {
 
     private fun orderAlert() {
         val alert = AlertDialog.Builder(this@FragmentMain.requireContext())
-        alert.setTitle("Order")
+        alert.setTitle("Ordena")
         val sorts = arrayOf(
-            "Insert date (old ones first)",
-            "Insert date (newest first)",
-            "Item code (A-Z)",
-            "Item code (Z-A)",
-            "Price from lowest to highest",
-            "Price from high to low"
+            "Insertar fecha (las viejas primero)",
+            "Insertar fecha (la más reciente primero)",
+            "Código de artículo (A-Z)",
+            "Código de artículo (Z-A)",
+            "Precio de mayor a menor",
+            "Precio de menor a mayor"
         )
         alert.setSingleChoiceItems(
             sorts, singlePosition
@@ -227,8 +229,39 @@ class FragmentMain : Fragment() {
     }
 
     private fun selectOrder() {
-        if(filterDescription && filterWithOutStock) {
-            database.Articles().getDescriptionWithWordAndStock(description).observe(this, {
+        when (singlePosition) {
+            1 -> orderType = 1
+            2 -> orderType = 2
+            3 -> orderType = 3
+            4 -> orderType = 4
+            5 -> orderType = 5
+            6 -> orderType = 6
+            else -> orderType = 2
+        }
+        refresh()
+    }
+
+    private fun refresh() {
+        if (filterDescription && filterWithOutStock) {
+            database.Articles().getDescriptionWithWordAndStock(description, orderType)
+                .observe(this, {
+                    listArticles = it
+
+                    val adapter = ArticleAdapter(listArticles)
+
+                    binding.lista.adapter = adapter
+                    if (listArticles.isEmpty()) {
+                        binding.emptyView.visibility = View.VISIBLE
+                        binding.lista.visibility = View.GONE
+                    } else {
+                        binding.emptyView.visibility = View.GONE
+                        binding.lista.visibility = View.VISIBLE
+                    }
+                    adapter.notifyDataSetChanged()
+
+                })
+        } else if (filterDescription) {
+            database.Articles().getDescriptionWithWord(description, orderType).observe(this, {
                 listArticles = it
 
                 val adapter = ArticleAdapter(listArticles)
@@ -241,10 +274,11 @@ class FragmentMain : Fragment() {
                     binding.emptyView.visibility = View.GONE
                     binding.lista.visibility = View.VISIBLE
                 }
+                adapter.notifyDataSetChanged()
 
             })
-        } else if(filterDescription) {
-            database.Articles().getDescriptionWithWord(description).observe(this, {
+        } else if (filterWithOutStock) {
+            database.Articles().getWithoutStock(orderType).observe(this, {
                 listArticles = it
 
                 val adapter = ArticleAdapter(listArticles)
@@ -257,26 +291,10 @@ class FragmentMain : Fragment() {
                     binding.emptyView.visibility = View.GONE
                     binding.lista.visibility = View.VISIBLE
                 }
-
-            })
-        } else if(filterWithOutStock) {
-            database.Articles().getWithoutStock().observe(this, {
-                listArticles = it
-
-                val adapter = ArticleAdapter(listArticles)
-
-                binding.lista.adapter = adapter
-                if (listArticles.isEmpty()) {
-                    binding.emptyView.visibility = View.VISIBLE
-                    binding.lista.visibility = View.GONE
-                } else {
-                    binding.emptyView.visibility = View.GONE
-                    binding.lista.visibility = View.VISIBLE
-                }
-
+                adapter.notifyDataSetChanged()
             })
         } else {
-            database.Articles().getAll().observe(this, {
+            database.Articles().getAllOrder(orderType).observe(this, {
                 listArticles = it
 
                 val adapter = ArticleAdapter(listArticles)
@@ -289,112 +307,8 @@ class FragmentMain : Fragment() {
                     binding.emptyView.visibility = View.GONE
                     binding.lista.visibility = View.VISIBLE
                 }
-
+                adapter.notifyDataSetChanged()
             })
-        }
-        when (singlePosition) {
-            1 -> {
-                database.Articles().getDescriptionOld().observe(this, {
-                    listArticles = it
-
-                    val adapter = ArticleAdapter(listArticles)
-
-                    binding.lista.adapter = adapter
-                    if (listArticles.isEmpty()) {
-                        binding.emptyView.visibility = View.VISIBLE
-                        binding.lista.visibility = View.GONE
-                    } else {
-                        binding.emptyView.visibility = View.GONE
-                        binding.lista.visibility = View.VISIBLE
-                    }
-
-                })
-            }
-            2 -> {
-                database.Articles().getDescriptionNew().observe(this, {
-                    listArticles = it
-
-                    val adapter = ArticleAdapter(listArticles)
-
-                    binding.lista.adapter = adapter
-                    if (listArticles.isEmpty()) {
-                        binding.emptyView.visibility = View.VISIBLE
-                        binding.lista.visibility = View.GONE
-                    } else {
-                        binding.emptyView.visibility = View.GONE
-                        binding.lista.visibility = View.VISIBLE
-                    }
-
-                })
-            }
-            3 -> {
-                database.Articles().getAllDesc().observe(this, {
-                    listArticles = it
-
-                    val adapter = ArticleAdapter(listArticles)
-
-                    binding.lista.adapter = adapter
-                    if (listArticles.isEmpty()) {
-                        binding.emptyView.visibility = View.VISIBLE
-                        binding.lista.visibility = View.GONE
-                    } else {
-                        binding.emptyView.visibility = View.GONE
-                        binding.lista.visibility = View.VISIBLE
-                    }
-
-                })
-            }
-            4 -> {
-                database.Articles().getAllAsc().observe(this, {
-                    listArticles = it
-
-                    val adapter = ArticleAdapter(listArticles)
-
-                    binding.lista.adapter = adapter
-                    if (listArticles.isEmpty()) {
-                        binding.emptyView.visibility = View.VISIBLE
-                        binding.lista.visibility = View.GONE
-                    } else {
-                        binding.emptyView.visibility = View.GONE
-                        binding.lista.visibility = View.VISIBLE
-                    }
-
-                })
-            }
-            5 -> {
-                database.Articles().getStockLow().observe(this, {
-                    listArticles = it
-
-                    val adapter = ArticleAdapter(listArticles)
-
-                    binding.lista.adapter = adapter
-                    if (listArticles.isEmpty()) {
-                        binding.emptyView.visibility = View.VISIBLE
-                        binding.lista.visibility = View.GONE
-                    } else {
-                        binding.emptyView.visibility = View.GONE
-                        binding.lista.visibility = View.VISIBLE
-                    }
-
-                })
-            }
-            6 -> {
-                database.Articles().getStockHigh().observe(this, {
-                    listArticles = it
-
-                    val adapter = ArticleAdapter(listArticles)
-
-                    binding.lista.adapter = adapter
-                    if (listArticles.isEmpty()) {
-                        binding.emptyView.visibility = View.VISIBLE
-                        binding.lista.visibility = View.GONE
-                    } else {
-                        binding.emptyView.visibility = View.GONE
-                        binding.lista.visibility = View.VISIBLE
-                    }
-
-                })
-            }
         }
     }
 

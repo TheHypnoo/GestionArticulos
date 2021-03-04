@@ -16,38 +16,30 @@ interface ArticleDAO {
 
     //Filtros para el Articulo
 
-    @Query("SELECT * FROM Articles ORDER BY idArticle ASC")
-    fun getAllAsc(): LiveData<List<Article>>
-
-    @Query("SELECT * FROM Articles ORDER BY idArticle DESC")
-    fun getAllDesc(): LiveData<List<Article>>
-
     @Query("SELECT * FROM Articles WHERE idArticle = :id")
     fun get(id: String?): LiveData<Article>
 
-    @Query("SELECT * FROM Articles WHERE descriptionArticle != ' ' ORDER BY _id ASC")
-    fun getDescriptionNew(): LiveData<List<Article>>
+    @Query("SELECT * FROM Articles ORDER BY CASE WHEN :order = 1 THEN _id END DESC, CASE WHEN :order = 2 THEN _id END ASC, CASE WHEN :order = 3 THEN idArticle END ASC, CASE WHEN :order = 4 THEN idArticle END DESC, CASE WHEN :order = 5 THEN priceArticle END ASC, CASE WHEN :order = 5 THEN priceArticle END DESC")
+    fun getAllOrder(order: Int): LiveData<List<Article>>
 
-    @Query("SELECT * FROM Articles WHERE descriptionArticle != ' ' ORDER BY _id DESC")
-    fun getDescriptionOld(): LiveData<List<Article>>
+    @Query("SELECT * FROM Articles WHERE descriptionArticle LIKE '%' || :Word || '%' ORDER BY CASE WHEN :order = 1 THEN _id END DESC, CASE WHEN :order = 2 THEN _id END ASC, CASE WHEN :order = 3 THEN idArticle END ASC, CASE WHEN :order = 4 THEN idArticle END DESC, CASE WHEN :order = 5 THEN priceArticle END ASC, CASE WHEN :order = 5 THEN priceArticle END DESC")
+    fun getDescriptionWithWord(Word: String, order: Int): LiveData<List<Article>>
 
-    @Query("SELECT * FROM Articles WHERE descriptionArticle LIKE '%' || :Word || '%' ")
-    fun getDescriptionWithWord(Word: String): LiveData<List<Article>>
-
-    @Query("SELECT * FROM Articles WHERE descriptionArticle LIKE '%' || :Word || '%' AND stockArticle <= 0")
-    fun getDescriptionWithWordAndStock(Word: String): LiveData<List<Article>>
+    @Query("SELECT * FROM Articles WHERE descriptionArticle LIKE '%' || :Word || '%' AND stockArticle <= 0 ORDER BY CASE WHEN :order = 1 THEN _id END DESC, CASE WHEN :order = 2 THEN _id END ASC, CASE WHEN :order = 3 THEN idArticle END ASC, CASE WHEN :order = 4 THEN idArticle END DESC, CASE WHEN :order = 5 THEN priceArticle END ASC, CASE WHEN :order = 5 THEN priceArticle END DESC")
+    fun getDescriptionWithWordAndStock(Word: String, order: Int): LiveData<List<Article>>
 
     @Query("SELECT * FROM Articles WHERE stockArticle != 0")
     fun getWithStock(): LiveData<List<Article>>
 
-    @Query("SELECT * FROM Articles WHERE stockArticle <= 0")
-    fun getWithoutStock(): LiveData<List<Article>>
+    @Query("SELECT * FROM Articles WHERE stockArticle <= 0 ORDER BY CASE WHEN :order = 1 THEN _id END DESC, CASE WHEN :order = 2 THEN _id END ASC, CASE WHEN :order = 3 THEN idArticle END ASC, CASE WHEN :order = 4 THEN idArticle END DESC, CASE WHEN :order = 5 THEN priceArticle END ASC, CASE WHEN :order = 5 THEN priceArticle END DESC")
+    fun getWithoutStock(order: Int): LiveData<List<Article>>
 
-    @Query("SELECT * FROM Articles ORDER BY stockArticle DESC")
-    fun getStockLow(): LiveData<List<Article>>
+    @Query("SELECT * FROM Articles ORDER BY priceArticle DESC")
+    fun getPriceLow(): LiveData<List<Article>>
 
-    @Query("SELECT * FROM Articles ORDER BY stockArticle ASC")
-    fun getStockHigh(): LiveData<List<Article>>
+    @Query("SELECT * FROM Articles ORDER BY priceArticle ASC")
+    fun getPriceHigh(): LiveData<List<Article>>
+
 
     //Movimientos del articulo
 
