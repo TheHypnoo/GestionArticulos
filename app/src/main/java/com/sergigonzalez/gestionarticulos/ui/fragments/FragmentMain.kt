@@ -25,7 +25,7 @@ class FragmentMain : Fragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     private var filterDescription: Boolean = false
-    private var filterStock: Boolean = false
+    private var filterWithOutStock: Boolean = false
     private lateinit var description: String
     private var singlePosition = 0
 
@@ -139,10 +139,10 @@ class FragmentMain : Fragment() {
         val alert = androidx.appcompat.app.AlertDialog.Builder(this@FragmentMain.requireContext())
         alert.setTitle("Select filters")
         val filtres = arrayOf(
-            "Article description",
-            "Article stock"
+            "Article With description",
+            "Article Without stock"
         )
-        val filtresSeleccionats = booleanArrayOf(filterDescription, filterStock)
+        val filtresSeleccionats = booleanArrayOf(filterDescription, filterWithOutStock)
         alert.setMultiChoiceItems(
             filtres, filtresSeleccionats
         ) { dialog, which, isChecked -> filtresSeleccionats[which] = isChecked }
@@ -150,7 +150,7 @@ class FragmentMain : Fragment() {
             android.R.string.ok
         ) { dialog, which ->
             filterDescription = filtresSeleccionats[0]
-            filterStock = filtresSeleccionats[1]
+            filterWithOutStock = filtresSeleccionats[1]
             if (filterDescription) {
                 alertDescription()
             } else {
@@ -167,7 +167,7 @@ class FragmentMain : Fragment() {
     private fun deleteFilters() {
         filterDescription = false;
         description = "";
-        filterStock = false;
+        filterWithOutStock = false;
         singlePosition = 0
         selectOrder()
     }
@@ -175,7 +175,7 @@ class FragmentMain : Fragment() {
     private fun alertDescription() {
         if (filterDescription) {
             val alert = AlertDialog.Builder(this@FragmentMain.requireContext()).create()
-            alert.setTitle("Escribe las palabras que quieres filtrar de la descripción")
+            alert.setTitle("Write the word you want to filter from the article description")
             val edtDescription = EditText(this@FragmentMain.requireContext())
             alert.setView(edtDescription)
             alert.setButton(
@@ -203,7 +203,7 @@ class FragmentMain : Fragment() {
     }
 
     private fun orderAlert() {
-        val alert = androidx.appcompat.app.AlertDialog.Builder(this@FragmentMain.requireContext())
+        val alert = AlertDialog.Builder(this@FragmentMain.requireContext())
         alert.setTitle("Order")
         val sorts = arrayOf(
             "Insert date (old ones first)",
@@ -227,7 +227,7 @@ class FragmentMain : Fragment() {
     }
 
     private fun selectOrder() {
-        if(filterDescription && filterStock) {
+        if(filterDescription && filterWithOutStock) {
             database.Articles().getDescriptionWithWordAndStock(description).observe(this, {
                 listArticles = it
 
@@ -259,7 +259,7 @@ class FragmentMain : Fragment() {
                 }
 
             })
-        } else if(filterStock) {
+        } else if(filterWithOutStock) {
             database.Articles().getWithoutStock().observe(this, {
                 listArticles = it
 

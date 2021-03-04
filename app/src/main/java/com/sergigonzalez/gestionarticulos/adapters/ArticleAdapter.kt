@@ -200,12 +200,14 @@ class ArticleAdapter(private val listArticle: List<Article>) :
                                     .toInt()
                             article.stockArticle = sumaStock
                             type = 'E'
+                            snackbarMessage("Stock añadido correctamente.", true)
                         } else {
                             val restaStock =
                                 article.stockArticle.toString().toInt() - stock.text.toString()
                                     .toInt()
                             article.stockArticle = restaStock
                             type = 'S'
+                            snackbarMessage("Stock restado correctamente.", true)
                         }
 
                         val movement = Movement(
@@ -220,7 +222,6 @@ class ArticleAdapter(private val listArticle: List<Article>) :
                             database.Articles().update(article)
                             database.Articles().insertMovement(movement)
                         }
-                        snackbarMessage("Movimiento y Articulo actualizado.", true)
                     } catch (e: Exception) {
                         snackbarMessage(
                             "El stock no ha sido modificado ya que no has introducido ningún valor.",
@@ -229,6 +230,9 @@ class ArticleAdapter(private val listArticle: List<Article>) :
                         return@OnClickListener
                     }
                 })
+            alert.setButton(AlertDialog.BUTTON_NEGATIVE,"Cancel") { _: DialogInterface, _: Int ->
+                alert.dismiss()
+            }
 
             alert.show()
         }

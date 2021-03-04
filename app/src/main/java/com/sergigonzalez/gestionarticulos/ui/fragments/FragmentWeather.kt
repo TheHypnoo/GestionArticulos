@@ -18,7 +18,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.sergigonzalez.gestionarticulos.Interface.HttpService
 import com.sergigonzalez.gestionarticulos.R
 import com.sergigonzalez.gestionarticulos.databinding.FragmentWeatherBinding
-import com.sergigonzalez.gestionarticulos.ui.activitys.WeatherActivity
 import com.sergigonzalez.gestionarticulos.weather.Weather
 import retrofit2.Call
 import retrofit2.Callback

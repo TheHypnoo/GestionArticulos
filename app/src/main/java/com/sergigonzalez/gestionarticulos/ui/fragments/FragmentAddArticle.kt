@@ -137,8 +137,8 @@ class FragmentAddArticle : Fragment() {
             var stock = 0
             //Probar el View...
             val view: View? = this@FragmentAddArticle.view?.findFocus()
-            if(Edit) stock = article!!.stockArticle
-            else stock = 0
+            stock = if(Edit) article!!.stockArticle
+            else 0
 
             if (binding.edtCode.text.toString().isNotEmpty()) {
                 id = binding.edtCode.text.toString()

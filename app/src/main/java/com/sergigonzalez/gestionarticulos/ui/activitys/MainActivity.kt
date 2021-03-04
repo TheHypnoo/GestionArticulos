@@ -71,6 +71,12 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.miInfo -> {
                     replaceFragment(fragmentInfo)
+                    binding.fab.setImageResource(R.drawable.ic_add_final)
+                    binding.fab.setOnClickListener {
+                        replaceFragment(fragment = FragmentAddArticle())
+                        binding.bottomAppBar.performShow()
+                        binding.bottomNavigationView.menu.getItem(2).isChecked = true
+                    }
                     return@setOnNavigationItemSelectedListener true
                 }
                 else -> false
