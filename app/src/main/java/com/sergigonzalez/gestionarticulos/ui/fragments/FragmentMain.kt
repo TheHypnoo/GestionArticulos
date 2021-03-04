@@ -137,10 +137,10 @@ class FragmentMain : Fragment() {
 
     private fun alertFilter() {
         val alert = androidx.appcompat.app.AlertDialog.Builder(this@FragmentMain.requireContext())
-        alert.setTitle("Select filters")
+        alert.setTitle("Selecciona un filtro")
         val filtres = arrayOf(
-            "Article With description",
-            "Article Without stock"
+            "Articulo con descripción",
+            "Articulo sin stock"
         )
         val filtresSeleccionats = booleanArrayOf(filterDescription, filterWithOutStock)
         alert.setMultiChoiceItems(
@@ -175,7 +175,7 @@ class FragmentMain : Fragment() {
     private fun alertDescription() {
         if (filterDescription) {
             val alert = AlertDialog.Builder(this@FragmentMain.requireContext()).create()
-            alert.setTitle("Write the word you want to filter from the article description")
+            alert.setTitle("Escribe una palabra para filtrar el articulo en la descripción")
             val edtDescription = EditText(this@FragmentMain.requireContext())
             alert.setView(edtDescription)
             alert.setButton(
@@ -185,7 +185,7 @@ class FragmentMain : Fragment() {
                     description = edtDescription.text.toString().toLowerCase()
                 } catch (e: Exception) {
                     description = ""
-                    snackbarMessage("Articles could not be filtered",false)
+                    snackbarMessage("No ha sido filtrado el articulo",false)
                 }
                 if (description.isEmpty()) {
                     filterDescription = false
@@ -204,14 +204,14 @@ class FragmentMain : Fragment() {
 
     private fun orderAlert() {
         val alert = AlertDialog.Builder(this@FragmentMain.requireContext())
-        alert.setTitle("Order")
+        alert.setTitle("Ordena")
         val sorts = arrayOf(
-            "Insert date (old ones first)",
-            "Insert date (newest first)",
-            "Item code (A-Z)",
-            "Item code (Z-A)",
-            "Price from lowest to highest",
-            "Price from high to low"
+            "Insertar fecha (las viejas primero)",
+            "Insertar fecha (la más reciente primero)",
+            "Código de artículo (A-Z)",
+            "Código de artículo (Z-A)",
+            "Precio de menor a mayor",
+            "Precio de mayor a menor"
         )
         alert.setSingleChoiceItems(
             sorts, singlePosition
@@ -362,7 +362,7 @@ class FragmentMain : Fragment() {
                 })
             }
             5 -> {
-                database.Articles().getStockLow().observe(this, {
+                database.Articles().getPriceLow().observe(this, {
                     listArticles = it
 
                     val adapter = ArticleAdapter(listArticles)
@@ -379,7 +379,7 @@ class FragmentMain : Fragment() {
                 })
             }
             6 -> {
-                database.Articles().getStockHigh().observe(this, {
+                database.Articles().getPriceHigh().observe(this, {
                     listArticles = it
 
                     val adapter = ArticleAdapter(listArticles)

@@ -43,11 +43,11 @@ interface ArticleDAO {
     @Query("SELECT * FROM Articles WHERE stockArticle <= 0")
     fun getWithoutStock(): LiveData<List<Article>>
 
-    @Query("SELECT * FROM Articles ORDER BY stockArticle DESC")
-    fun getStockLow(): LiveData<List<Article>>
+    @Query("SELECT * FROM Articles ORDER BY priceArticle DESC")
+    fun getPriceLow(): LiveData<List<Article>>
 
-    @Query("SELECT * FROM Articles ORDER BY stockArticle ASC")
-    fun getStockHigh(): LiveData<List<Article>>
+    @Query("SELECT * FROM Articles ORDER BY priceArticle ASC")
+    fun getPriceHigh(): LiveData<List<Article>>
 
     //Movimientos del articulo
 
