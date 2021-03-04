@@ -26,17 +26,18 @@
         style="@style/TvShow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/quantity"
-        android:layout_margin="10dp"/>
+        android:layout_margin="10dp"
+        android:text="@string/quantity" />
 
     <EditText
         android:id="@+id/cantidad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:autofillHints=""
         android:ems="10"
         android:inputType="number"
-        android:autofillHints=""
         tools:ignore="LabelFor" />
 
     <TextView

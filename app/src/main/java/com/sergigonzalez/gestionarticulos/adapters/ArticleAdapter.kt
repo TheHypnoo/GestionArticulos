@@ -1,34 +1,37 @@
 package com.sergigonzalez.gestionarticulos.adapters
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.DialogInterface
-import android.content.Intent
 import android.graphics.Color
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.sergigonzalez.gestionarticulos.`object`.DialogCalendar
-import com.sergigonzalez.gestionarticulos.MainActivity
-import com.sergigonzalez.gestionarticulos.Movements
-import com.sergigonzalez.gestionarticulos.NewArticle
+import com.google.android.material.snackbar.Snackbar
 import com.sergigonzalez.gestionarticulos.R
+import com.sergigonzalez.gestionarticulos.`object`.DialogCalendar
 import com.sergigonzalez.gestionarticulos.data.Article
 import com.sergigonzalez.gestionarticulos.data.ArticleApp
 import com.sergigonzalez.gestionarticulos.data.Movement
+import com.sergigonzalez.gestionarticulos.ui.activitys.MainActivity
+import com.sergigonzalez.gestionarticulos.ui.fragments.FragmentAddArticle
+import com.sergigonzalez.gestionarticulos.ui.fragments.FragmentMovements
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
 
-class ArticleAdapter(private val listArticle : List<Article>) : RecyclerView.Adapter<ArticleAdapter.ArticleHolder>(){
+class ArticleAdapter(private val listArticle: List<Article>) :
+    RecyclerView.Adapter<ArticleAdapter.ArticleHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleHolder {
         val viewInflater = LayoutInflater.from(parent.context)
-        return ArticleHolder(viewInflater.inflate(R.layout.item_article,parent,false))
+        return ArticleHolder(viewInflater.inflate(R.layout.item_article, parent, false))
     }
 
     override fun onBindViewHolder(holder: ArticleHolder, position: Int) {
@@ -38,25 +41,15 @@ class ArticleAdapter(private val listArticle : List<Article>) : RecyclerView.Ada
 
     override fun getItemCount(): Int = listArticle.size
 
-    class ArticleHolder(private val view: View): RecyclerView.ViewHolder(view) {
+    class ArticleHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         companion object {
-            fun deleteArticle(article: Article,view : View, database: ArticleApp) {
-                val builder = AlertDialog.Builder(view.context)
-                builder.setMessage("Estas seguro que deseas eliminar el Articulo?")
-
-                builder.setPositiveButton(android.R.string.ok) { _, _ ->
-                    CoroutineScope(Dispatchers.IO).launch {
-                        database.Articles().delete(article)
-                    }
+            fun deleteArticle(article: Article, database: ArticleApp) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    database.Articles().delete(article)
                 }
-
-                builder.setNegativeButton(android.R.string.cancel) { dialog, _ ->
-                    dialog.dismiss()
-                }
-
-                builder.show()
             }
         }
+
         private val noHaveStock = "#d78290"
         private lateinit var database: ArticleApp
         private val c = Calendar.getInstance()
@@ -65,6 +58,8 @@ class ArticleAdapter(private val listArticle : List<Article>) : RecyclerView.Ada
         private var _month = c[Calendar.MONTH]
         private var _day = c[Calendar.DAY_OF_MONTH]
         private var _main: MainActivity? = null
+        private var fragmentAddArticle: FragmentAddArticle = FragmentAddArticle()
+        private var fragmentMovements: FragmentMovements = FragmentMovements()
 
         fun render(article: Article) {
             _main = view.context as MainActivity?
@@ -91,12 +86,24 @@ class ArticleAdapter(private val listArticle : List<Article>) : RecyclerView.Ada
             val priceIVA = article.priceArticle * 0.21 + article.priceArticle
             "${priceIVA}€".also { priceWithIVA.text = it }
             if (stock.text.toString().toInt() <= 0) {
-
                 linearLayoutArticle!!.setBackgroundColor(Color.parseColor(noHaveStock))
             }
 
             delete.setOnClickListener {
-                deleteArticle(article,view,database)
+                val builder = AlertDialog.Builder(view.context)
+                builder.setMessage("Estas seguro que deseas eliminar el Articulo?\nCon codigo: ${article.idArticle}\nDescripción:  ${article.descriptionArticle}")
+
+                builder.setPositiveButton(android.R.string.ok) { _, _ ->
+                    CoroutineScope(Dispatchers.IO).launch {
+                        deleteArticle(article, database)
+                    }
+                }
+
+                builder.setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                    dialog.dismiss()
+                }
+
+                builder.show()
 
             }
 
@@ -110,22 +117,37 @@ class ArticleAdapter(private val listArticle : List<Article>) : RecyclerView.Ada
             }
 
             movement.setOnClickListener {
-                val intent = Intent(view.context, Movements::class.java)
-                intent.putExtra("idArticle", article.idArticle)
-                _main?.startActivity(intent)
+                val bundle = Bundle()
+                bundle.putString("idArticle", article.idArticle)
+                fragmentMovements.arguments = bundle
+                replaceFragment(fragmentMovements)
+                _main?.bottomNavigationView?.menu?.getItem(2)?.isChecked = true
+                _main?.fab?.setImageResource(R.drawable.ic_search_black_24dp)
+                _main?.appbar?.performShow()
+                _main?.fab?.setOnClickListener {
+                    fragmentMovements.search()
+                }
             }
 
-            view.setOnClickListener{
-                val intent = Intent(view.context, NewArticle::class.java)
-                intent.putExtra("Article", article)
-                intent.putExtra("Edit", true)
-                _main?.startActivity(intent)
+            view.setOnClickListener {
+                val bundle = Bundle()
+                bundle.putSerializable("Article", article)
+                bundle.putBoolean("Edit", true)
+                fragmentAddArticle.arguments = bundle
+                replaceFragment(fragmentAddArticle)
+                _main?.appbar?.performShow()
+                _main?.bottomNavigationView?.menu?.getItem(2)?.isChecked = true
             }
 
 
         }
 
-        @SuppressLint("SetTextI18n", "ShowToast")
+        private fun replaceFragment(fragment: Fragment) {
+            (view.context as FragmentActivity).supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment).commit()
+        }
+
+
         private fun stockDate(article: Article, moreOrLess: Boolean) {
             _year = c[Calendar.YEAR]
             _month = c[Calendar.MONTH]
@@ -174,14 +196,18 @@ class ArticleAdapter(private val listArticle : List<Article>) : RecyclerView.Ada
                         )
                         if (moreOrLess) {
                             val sumaStock =
-                                article.stockArticle.toString().toInt() + stock.text.toString().toInt()
+                                article.stockArticle.toString().toInt() + stock.text.toString()
+                                    .toInt()
                             article.stockArticle = sumaStock
                             type = 'E'
+                            snackbarMessage("Stock añadido correctamente.", true)
                         } else {
                             val restaStock =
-                                article.stockArticle.toString().toInt() - stock.text.toString().toInt()
+                                article.stockArticle.toString().toInt() - stock.text.toString()
+                                    .toInt()
                             article.stockArticle = restaStock
                             type = 'S'
+                            snackbarMessage("Stock restado correctamente.", true)
                         }
 
                         val movement = Movement(
@@ -196,18 +222,27 @@ class ArticleAdapter(private val listArticle : List<Article>) : RecyclerView.Ada
                             database.Articles().update(article)
                             database.Articles().insertMovement(movement)
                         }
-                        Toast.makeText(view.context, "Movimiento y Articulo actualizado", Toast.LENGTH_SHORT)
                     } catch (e: Exception) {
-                        Toast.makeText(
-                            view.context,
+                        snackbarMessage(
                             "El stock no ha sido modificado ya que no has introducido ningún valor.",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                            false
+                        )
                         return@OnClickListener
                     }
                 })
+            alert.setButton(AlertDialog.BUTTON_NEGATIVE,"Cancel") { _: DialogInterface, _: Int ->
+                alert.dismiss()
+            }
 
             alert.show()
+        }
+
+        private fun snackbarMessage(_message: String, CorrectorIncorrect: Boolean) {
+            if (CorrectorIncorrect) Snackbar.make(view, _message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(Color.parseColor("#ff669900")).show()
+            else
+                Snackbar.make(view, _message, Snackbar.LENGTH_SHORT)
+                    .setBackgroundTint(Color.parseColor("#B00020")).show()
         }
 
     }
