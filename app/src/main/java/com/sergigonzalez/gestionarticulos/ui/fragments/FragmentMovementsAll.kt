@@ -50,7 +50,7 @@ class FragmentMovementsAll : Fragment() {
             val date =
                 DialogCalendar.changeFormatDate(binding.edtDateM.text.toString(), "dd/MM/yyyy", "yyyy/MM/dd")
 
-            database.Articles().dateMovements(date).observe(this, {
+            database.Articles().dateMovementsAllDate(date).observe(this, {
                 listMovements = it
                 if(listMovements.isEmpty()) {
                     binding.tvEmptyVievMovementsAll.visibility = View.VISIBLE

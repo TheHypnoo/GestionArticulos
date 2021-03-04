@@ -59,6 +59,9 @@ interface ArticleDAO {
     @Query("SELECT * FROM Articles INNER JOIN Movement ON idArticle = idArticleMovement ORDER BY idArticle ASC")
     fun dateMovementsAll(): LiveData<List<Movement>>
 
+    @Query("SELECT * FROM Movement WHERE day = :date ORDER BY day DESC")
+    fun dateMovementsAllDate(date: String): LiveData<List<Movement>>
+
 
     //Extras
 
