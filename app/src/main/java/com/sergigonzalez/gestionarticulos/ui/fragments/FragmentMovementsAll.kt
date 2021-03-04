@@ -53,6 +53,7 @@ class FragmentMovementsAll : Fragment() {
             database.Articles().dateMovements(date).observe(this, {
                 listMovements = it
                 if(listMovements.isEmpty()) {
+                    binding.tvEmptyVievMovementsAll.visibility = View.VISIBLE
                     binding.tvEmptyVievMovementsAll.text = "No hay ningún movimiento"
                 } else {
                     binding.tvEmptyVievMovementsAll.visibility = View.GONE
@@ -74,6 +75,7 @@ class FragmentMovementsAll : Fragment() {
             database.Articles().dateMovementsAll().observe(this, {
                 listMovements = it
                 if(listMovements.isEmpty()) {
+                    binding.tvEmptyVievMovementsAll.visibility = View.VISIBLE
                     binding.tvEmptyVievMovementsAll.text = "No hay ningún movimiento"
                 } else {
                     binding.tvEmptyVievMovementsAll.visibility = View.GONE

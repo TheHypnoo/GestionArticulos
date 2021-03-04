@@ -3,6 +3,7 @@ package com.sergigonzalez.gestionarticulos.ui.fragments
 import android.app.ProgressDialog
 import android.content.Context
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.os.Bundle
 import android.os.StrictMode
 import android.text.Editable
@@ -32,11 +33,6 @@ class FragmentWeather : Fragment() {
     val BASEAPI = "http://api.openweathermap.org/data/2.5/"
     val API_ID = "5ab85ccd70b8d88070aa1c166d5006bd"
     val LANG = "es"
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -80,10 +76,7 @@ class FragmentWeather : Fragment() {
 
             override fun onFailure(call: Call<Weather>, t: Throwable) {
                 t.message?.let {
-                    Snackbar.make(
-                        binding.root,
-                        it, Snackbar.LENGTH_SHORT
-                    ).show()
+                    snackbarMessage(it,false)
                 }
                 Dialog.hide()
 
@@ -93,9 +86,7 @@ class FragmentWeather : Fragment() {
             override fun onResponse(call: Call<Weather>?, response: Response<Weather>?) {
 
                 if (!response!!.isSuccessful) {
-
-                    Snackbar.make(binding.root, response.code().toString(), Snackbar.LENGTH_SHORT)
-                        .show()
+                    snackbarMessage(response.code().toString(),false)
                     Dialog.hide()
                     return
 
@@ -204,5 +195,13 @@ class FragmentWeather : Fragment() {
 
     fun Convert(x: Double): Double {
         return x - 273.15
+    }
+
+    private fun snackbarMessage(_message: String, CorrectorIncorrect: Boolean) {
+        if (CorrectorIncorrect) Snackbar.make(binding.root, _message, Snackbar.LENGTH_SHORT)
+            .setBackgroundTint(Color.parseColor("#ff669900")).show()
+        else
+            Snackbar.make(binding.root, _message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(Color.parseColor("#B00020")).show()
     }
 }

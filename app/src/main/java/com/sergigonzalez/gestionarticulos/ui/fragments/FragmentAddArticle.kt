@@ -2,6 +2,7 @@ package com.sergigonzalez.gestionarticulos.ui.fragments
 
 import android.content.Context
 import android.database.sqlite.SQLiteConstraintException
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -12,6 +13,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import com.google.android.material.color.MaterialColors.getColor
 import com.google.android.material.snackbar.Snackbar
 import com.sergigonzalez.gestionarticulos.R
 import com.sergigonzalez.gestionarticulos.data.Article
@@ -28,9 +30,9 @@ class FragmentAddArticle : Fragment() {
     private var family: String = " "
     private var _id: Int = 0
     private var Edit: Boolean = false
-    private var article : Article? = null
+    private var article: Article? = null
     private var idArticle: String? = null
-    private val fragmentMain : FragmentMain = FragmentMain()
+    private val fragmentMain: FragmentMain = FragmentMain()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -76,11 +78,11 @@ class FragmentAddArticle : Fragment() {
                     "Software" -> {
                         "Software"
                     }
-                    "Altres" -> {
-                        "Altres"
+                    "Others" -> {
+                        "Others"
                     }
                     else -> {
-                        " "
+                        "None"
                     }
                 }
             }
@@ -94,7 +96,7 @@ class FragmentAddArticle : Fragment() {
         Edit = arguments?.getBoolean("Edit") == true
     }
 
-    private fun checkRun(){
+    private fun checkRun() {
         if (Edit) {
             binding.edtCode.isEnabled = false
             binding.edtStock.isEnabled = false
@@ -111,7 +113,7 @@ class FragmentAddArticle : Fragment() {
             binding.edtStock.setText(article!!.stockArticle.toString())
             family = article!!.familyArticle
             when (article!!.familyArticle) {
-                " " -> {
+                "None" -> {
                     binding.familySpinner.setSelection(0)
                 }
                 "Hardware" -> {
@@ -120,7 +122,7 @@ class FragmentAddArticle : Fragment() {
                 "Software" -> {
                     binding.familySpinner.setSelection(2)
                 }
-                "Altres" -> {
+                "Others" -> {
                     binding.familySpinner.setSelection(3)
                 }
             }
@@ -128,13 +130,15 @@ class FragmentAddArticle : Fragment() {
             activity?.title = "Edit $idArticle"
         }
 
-        binding.saveBtn.setOnClickListener{
+        binding.saveBtn.setOnClickListener {
             val id: String
             val descripcion: String
             val precio: Double
             var stock = 0
             //Probar el View...
             val view: View? = this@FragmentAddArticle.view?.findFocus()
+            if(Edit) stock = article!!.stockArticle
+            else stock = 0
 
             if (binding.edtCode.text.toString().isNotEmpty()) {
                 id = binding.edtCode.text.toString()
@@ -145,7 +149,7 @@ class FragmentAddArticle : Fragment() {
                     ) as InputMethodManager
                     imm.hideSoftInputFromWindow(view.windowToken, 0)
                 }
-                snackbarMessage("Debes introducir un codigo")
+                snackbarMessage("Debes introducir un codigo", false)
                 return@setOnClickListener
             }
 
@@ -158,7 +162,7 @@ class FragmentAddArticle : Fragment() {
                     ) as InputMethodManager
                     imm.hideSoftInputFromWindow(view.windowToken, 0)
                 }
-                snackbarMessage("Debes introducir una descripción")
+                snackbarMessage("Debes introducir una descripción", false)
                 return@setOnClickListener
             }
 
@@ -177,7 +181,7 @@ class FragmentAddArticle : Fragment() {
                     ) as InputMethodManager
                     imm.hideSoftInputFromWindow(view.windowToken, 0)
                 }
-                snackbarMessage("Debes introducir un precio")
+                snackbarMessage("Debes introducir un precio", false)
                 return@setOnClickListener
             }
 
@@ -188,7 +192,7 @@ class FragmentAddArticle : Fragment() {
                     ) as InputMethodManager
                     imm.hideSoftInputFromWindow(view.windowToken, 0)
                 }
-                snackbarMessage("El precio ha de ser un numero superior o igual a 0")
+                snackbarMessage("El precio ha de ser un numero superior o igual a 0", false)
                 return@setOnClickListener
             }
 
@@ -221,9 +225,7 @@ class FragmentAddArticle : Fragment() {
                         imm.hideSoftInputFromWindow(view.windowToken, 0)
                     }
                     if (Edit) {
-                        snackbarMessage("Has modificado el articulo correctamente")
-                    } else {
-                        snackbarMessage("Has creado el Articulo correctamente")
+                        snackbarMessage("Has modificado el articulo correctamente", true)
                     }
                     Handler(Looper.getMainLooper()).postDelayed({
                         replaceFragment(fragmentMain)
@@ -234,8 +236,10 @@ class FragmentAddArticle : Fragment() {
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
                         database.Articles().insertAll(article)
-
-                        replaceFragment(fragmentMain)
+                        snackbarMessage("Has creado el Articulo correctamente", true)
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            replaceFragment(fragmentMain)
+                        }, 500)
                     } catch (e: SQLiteConstraintException) {
                         if (view != null) {
                             val imm = requireActivity().getSystemService(
@@ -243,16 +247,19 @@ class FragmentAddArticle : Fragment() {
                             ) as InputMethodManager
                             imm.hideSoftInputFromWindow(view.windowToken, 0)
                         }
-                        snackbarMessage("Ya existe el mismo codigo")
+                        snackbarMessage("Ya existe el mismo codigo", false)
                     }
                 }
             }
         }
     }
 
-    private fun snackbarMessage(_message: String) {
-        //Modo prueba
-        Snackbar.make(binding.root, _message, Snackbar.LENGTH_SHORT).show()
+    private fun snackbarMessage(_message: String, CorrectorIncorrect: Boolean) {
+        if (CorrectorIncorrect) Snackbar.make(binding.root, _message, Snackbar.LENGTH_SHORT)
+            .setBackgroundTint(Color.parseColor("#ff669900")).show()
+        else
+            Snackbar.make(binding.root, _message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(Color.parseColor("#B00020")).show()
     }
 
     private fun TryCatchDouble(_string: String): Boolean {

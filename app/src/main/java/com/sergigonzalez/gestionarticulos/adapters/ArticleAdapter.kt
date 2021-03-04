@@ -1,10 +1,7 @@
 package com.sergigonzalez.gestionarticulos.adapters
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.app.PendingIntent.getActivity
 import android.content.DialogInterface
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,6 +11,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.sergigonzalez.gestionarticulos.R
 import com.sergigonzalez.gestionarticulos.`object`.DialogCalendar
 import com.sergigonzalez.gestionarticulos.data.Article
@@ -28,7 +26,8 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 
-class ArticleAdapter(private val listArticle: List<Article>) : RecyclerView.Adapter<ArticleAdapter.ArticleHolder>(){
+class ArticleAdapter(private val listArticle: List<Article>) :
+    RecyclerView.Adapter<ArticleAdapter.ArticleHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleHolder {
         val viewInflater = LayoutInflater.from(parent.context)
@@ -42,7 +41,7 @@ class ArticleAdapter(private val listArticle: List<Article>) : RecyclerView.Adap
 
     override fun getItemCount(): Int = listArticle.size
 
-    class ArticleHolder(private val view: View): RecyclerView.ViewHolder(view) {
+    class ArticleHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         companion object {
             fun deleteArticle(article: Article, database: ArticleApp) {
                 CoroutineScope(Dispatchers.IO).launch {
@@ -50,6 +49,7 @@ class ArticleAdapter(private val listArticle: List<Article>) : RecyclerView.Adap
                 }
             }
         }
+
         private val noHaveStock = "#d78290"
         private lateinit var database: ArticleApp
         private val c = Calendar.getInstance()
@@ -58,8 +58,8 @@ class ArticleAdapter(private val listArticle: List<Article>) : RecyclerView.Adap
         private var _month = c[Calendar.MONTH]
         private var _day = c[Calendar.DAY_OF_MONTH]
         private var _main: MainActivity? = null
-        private var fragmentAddArticle : FragmentAddArticle = FragmentAddArticle()
-        private var fragmentMovements : FragmentMovements = FragmentMovements()
+        private var fragmentAddArticle: FragmentAddArticle = FragmentAddArticle()
+        private var fragmentMovements: FragmentMovements = FragmentMovements()
 
         fun render(article: Article) {
             _main = view.context as MainActivity?
@@ -86,7 +86,6 @@ class ArticleAdapter(private val listArticle: List<Article>) : RecyclerView.Adap
             val priceIVA = article.priceArticle * 0.21 + article.priceArticle
             "${priceIVA}€".also { priceWithIVA.text = it }
             if (stock.text.toString().toInt() <= 0) {
-
                 linearLayoutArticle!!.setBackgroundColor(Color.parseColor(noHaveStock))
             }
 
@@ -125,12 +124,12 @@ class ArticleAdapter(private val listArticle: List<Article>) : RecyclerView.Adap
                 _main?.bottomNavigationView?.menu?.getItem(2)?.isChecked = true
                 _main?.fab?.setImageResource(R.drawable.ic_search_black_24dp)
                 _main?.appbar?.performShow()
-                _main?.fab?.setOnClickListener{
+                _main?.fab?.setOnClickListener {
                     fragmentMovements.search()
                 }
             }
 
-            view.setOnClickListener{
+            view.setOnClickListener {
                 val bundle = Bundle()
                 bundle.putSerializable("Article", article)
                 bundle.putBoolean("Edit", true)
@@ -148,7 +147,7 @@ class ArticleAdapter(private val listArticle: List<Article>) : RecyclerView.Adap
                 .replace(R.id.fragment_container, fragment).commit()
         }
 
-        @SuppressLint("SetTextI18n", "ShowToast")
+
         private fun stockDate(article: Article, moreOrLess: Boolean) {
             _year = c[Calendar.YEAR]
             _month = c[Calendar.MONTH]
@@ -221,22 +220,25 @@ class ArticleAdapter(private val listArticle: List<Article>) : RecyclerView.Adap
                             database.Articles().update(article)
                             database.Articles().insertMovement(movement)
                         }
-                        Toast.makeText(
-                            view.context,
-                            "Movimiento y Articulo actualizado",
-                            Toast.LENGTH_SHORT
-                        )
+                        snackbarMessage("Movimiento y Articulo actualizado.", true)
                     } catch (e: Exception) {
-                        Toast.makeText(
-                            view.context,
+                        snackbarMessage(
                             "El stock no ha sido modificado ya que no has introducido ningún valor.",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                            false
+                        )
                         return@OnClickListener
                     }
                 })
 
             alert.show()
+        }
+
+        private fun snackbarMessage(_message: String, CorrectorIncorrect: Boolean) {
+            if (CorrectorIncorrect) Snackbar.make(view, _message, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(Color.parseColor("#ff669900")).show()
+            else
+                Snackbar.make(view, _message, Snackbar.LENGTH_SHORT)
+                    .setBackgroundTint(Color.parseColor("#B00020")).show()
         }
 
     }

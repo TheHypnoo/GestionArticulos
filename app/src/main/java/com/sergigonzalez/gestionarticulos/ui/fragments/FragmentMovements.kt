@@ -70,6 +70,7 @@ class FragmentMovements : Fragment() {
             database.Articles().dateIDateF(idArticle,dayF, dayI).observe(this, {
                 listMovements = it
                 if(listMovements.isEmpty()) {
+                    binding.tvEmptyVievMovements.visibility = View.VISIBLE
                     binding.tvEmptyVievMovements.text = "No hay ningún movimiento"
                 } else {
                     binding.tvEmptyVievMovements.visibility = View.GONE
@@ -96,6 +97,7 @@ class FragmentMovements : Fragment() {
             database.Articles().dateI(idArticle, dayI).observe(this, {
                 listMovements = it
                 if(listMovements.isEmpty()) {
+                    binding.tvEmptyVievMovements.visibility = View.VISIBLE
                     binding.tvEmptyVievMovements.text = "No hay ningún movimiento"
                 } else {
                     binding.tvEmptyVievMovements.visibility = View.GONE
@@ -123,6 +125,7 @@ class FragmentMovements : Fragment() {
             database.Articles().dateF(idArticle, dayF).observe(this, {
                 listMovements = it
                 if(listMovements.isEmpty()) {
+                    binding.tvEmptyVievMovements.visibility = View.VISIBLE
                     binding.tvEmptyVievMovements.text = "No hay ningún movimiento"
                 } else {
                     binding.tvEmptyVievMovements.visibility = View.GONE
@@ -144,6 +147,7 @@ class FragmentMovements : Fragment() {
             database.Articles().dateMovements(idArticle).observe(this, {
                 listMovements = it
                 if(listMovements.isEmpty()) {
+                    binding.tvEmptyVievMovements.visibility = View.VISIBLE
                     binding.tvEmptyVievMovements.text = "No hay ningún movimiento"
                 } else {
                     binding.tvEmptyVievMovements.visibility = View.GONE

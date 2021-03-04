@@ -34,8 +34,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:textAlignment="center"
             android:inputType="textPersonName"
-            android:autofillHints=""
+            android:hint="Codigo del articulo*"
             tools:ignore="LabelFor" />
 
         <TextView
@@ -52,8 +53,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:textAlignment="center"
             android:inputType="textPersonName"
-            android:autofillHints=""
+            android:hint="Descripción del articulo*"
             tools:ignore="LabelFor" />
 
         <TextView
@@ -88,8 +90,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:textAlignment="center"
             android:inputType="textPersonName"
             android:autofillHints=""
+            android:hint="Precio(Sin IVA)*"
             tools:ignore="LabelFor" />
 
         <TextView
@@ -107,6 +111,7 @@
             android:layout_height="wrap_content"
             android:autofillHints=""
             android:ems="10"
+            android:textAlignment="center"
             android:inputType="textPersonName"
             android:text="0"
             android:textSize="18sp"

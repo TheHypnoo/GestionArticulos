@@ -25,14 +25,29 @@ interface ArticleDAO {
     @Query("SELECT * FROM Articles WHERE idArticle = :id")
     fun get(id: String?): LiveData<Article>
 
-    @Query("SELECT * FROM Articles WHERE descriptionArticle != ' ' ")
-    fun getDescription(): LiveData<List<Article>>
+    @Query("SELECT * FROM Articles WHERE descriptionArticle != ' ' ORDER BY _id ASC")
+    fun getDescriptionNew(): LiveData<List<Article>>
+
+    @Query("SELECT * FROM Articles WHERE descriptionArticle != ' ' ORDER BY _id DESC")
+    fun getDescriptionOld(): LiveData<List<Article>>
+
+    @Query("SELECT * FROM Articles WHERE descriptionArticle LIKE '%' || :Word || '%' ")
+    fun getDescriptionWithWord(Word: String): LiveData<List<Article>>
+
+    @Query("SELECT * FROM Articles WHERE descriptionArticle LIKE '%' || :Word || '%' AND stockArticle <= 0")
+    fun getDescriptionWithWordAndStock(Word: String): LiveData<List<Article>>
 
     @Query("SELECT * FROM Articles WHERE stockArticle != 0")
     fun getWithStock(): LiveData<List<Article>>
 
     @Query("SELECT * FROM Articles WHERE stockArticle <= 0")
     fun getWithoutStock(): LiveData<List<Article>>
+
+    @Query("SELECT * FROM Articles ORDER BY stockArticle DESC")
+    fun getStockLow(): LiveData<List<Article>>
+
+    @Query("SELECT * FROM Articles ORDER BY stockArticle ASC")
+    fun getStockHigh(): LiveData<List<Article>>
 
     //Movimientos del articulo
 

@@ -29,11 +29,9 @@
     <string name="Salida">Salida:</string>
 
     <string-array name="family">
-        <item> </item>
+        <item>None</item>
         <item>Hardware</item>
         <item>Software</item>
-        <item>Altres</item>
+        <item>Others</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
